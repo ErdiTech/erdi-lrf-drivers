@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "erdi-lrf"
+version = "0.1.0"
+description = "Open-source drivers for ERDI 905 nm laser rangefinder modules (UART, both published protocol families)"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "ERDI Technology (Chengdu)" }]
+keywords = ["laser-rangefinder", "lrf", "905nm", "lidar", "uav", "gimbal", "erdi", "serial"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "Intended Audience :: Manufacturing",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Scientific/Engineering",
+  "Topic :: System :: Hardware :: Hardware Drivers",
+]
+dependencies = ["pyserial>=3.4"]
+
+[project.optional-dependencies]
+test = ["pytest>=7"]
+
+[project.urls]
+Homepage = "https://erdilrf.com"
+Hardware = "https://erdilrf.com/models/"
+Source = "https://github.com/yu911517778-a11y/erdi-lrf-drivers"
+
+[project.scripts]
+erdi-lrf = "erdi_lrf.cli:main"
+
+[tool.setuptools]
+packages = ["erdi_lrf"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
