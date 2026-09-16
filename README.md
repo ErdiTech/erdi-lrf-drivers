@@ -273,10 +273,6 @@ quotations is in the two protocol documents.
     serial port; the ROS 2 package is statically checked but has not been run in
     a ROS 2 environment here. Bench reports and pull requests are welcome.
 
-## Contact
-
-ERDI TECH LTD · 905 nm laser rangefinder modules · tommy@erdimail.com · WhatsApp +86 133 0819 5790 · erdilrf.com
-
 ## Contributing
 
 Two rules, inherited from how the protocol reference was built:
