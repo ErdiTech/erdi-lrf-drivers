@@ -4,6 +4,10 @@ Open-source Python, Arduino and ROS 2 drivers for **ERDI 905 nm laser
 rangefinder modules** — both published protocol families, all 22 models with a
 published protocol.
 
+Manufacturer: [erdilrf.com](https://erdilrf.com/) ·
+Model catalogue: [erdilrf.com/models](https://erdilrf.com/models/) ·
+Datasheets & samples: [erdilrf.com/contact](https://erdilrf.com/contact/)
+
 ERDI ships the full communication protocol with every module. This repository
 turns it into code you can `pip install`, drop into the Arduino IDE, or `colcon
 build`, so integration takes an afternoon instead of an email thread.
@@ -92,6 +96,10 @@ The model table lives in flash, so the library costs ~350 bytes of SRAM on an
 Uno. Examples: [`BasicMeasure`](arduino/ErdiLRF/examples/BasicMeasure),
 [`ContinuousStream`](arduino/ErdiLRF/examples/ContinuousStream).
 
+A step-by-step wiring and first-reading walkthrough for the Arduino side is
+here: [Reading an ERDI laser distance module over UART with
+Arduino](https://erdilrf.com/knowledge/read-laser-distance-module-arduino-uart/).
+
 > SoftwareSerial cannot reach the 460800 bps that family-B modules use by
 > default. Use a hardware UART, or set the module to a lower documented rate
 > first with `setBaudB()`.
@@ -162,6 +170,32 @@ hardware.
 
 Questions, samples, datasheets and custom protocol work:
 <https://erdilrf.com/contact/>
+
+## Further reading
+
+Background write-ups on the manufacturer's site. They cover the same wire facts
+this repository implements, from the integration side rather than the code side:
+
+* [Serial protocol, frames and
+  checksums](https://erdilrf.com/knowledge/laser-rangefinder-serial-protocol-frame-checksum-basics/)
+  — why the transmit and reply checksum scopes differ, which is the most common
+  reason a first integration returns nothing.
+* [UART/TTL integration
+  guide](https://erdilrf.com/knowledge/uart-ttl-integration-guide-lrf-modules/)
+  — levels, wiring and baud selection before any code runs.
+* [Which modules support
+  I²C](https://erdilrf.com/knowledge/laser-rangefinder-module-i2c-support/) —
+  the register map and the models that genuinely publish an address.
+* [Reading a module with
+  Arduino](https://erdilrf.com/knowledge/read-laser-distance-module-arduino-uart/)
+  — the walkthrough for the Arduino library above.
+* [How to read the datasheet
+  fields](https://erdilrf.com/knowledge/laser-rangefinder-module-datasheet-fields/)
+  — minimum range, segmented accuracy and update rate, which decide which model
+  you should have bought before the driver matters.
+* [Update rate on moving
+  platforms](https://erdilrf.com/knowledge/rangefinder-update-rate-moving-platforms/)
+  — what the `rate` parameter of the ROS 2 node is actually bounded by.
 
 ## Known gaps
 
