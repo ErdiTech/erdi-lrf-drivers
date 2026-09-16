@@ -47,7 +47,7 @@ raises a clear error rather than falling back to a similar model.
 pip install https://github.com/yu911517778-a11y/erdi-lrf-drivers/releases/download/v0.1.0/erdi_lrf-0.1.0-py3-none-any.whl
 
 # or track main directly
-pip install git+https://github.com/yu911517778-a11y/erdi-lrf-drivers
+pip install "git+https://github.com/yu911517778-a11y/erdi-lrf-drivers#subdirectory=python"
 ```
 
 Arduino: install via the Arduino IDE **Library Manager** — search `ErdiLRF`
