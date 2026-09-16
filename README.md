@@ -35,6 +35,32 @@ Full table with baud rates, frame layouts, units and ranges:
 communication manual for them, so this repository ships no driver for them and
 raises a clear error rather than falling back to a similar model.
 
+## Install in one command
+
+```bash
+# from the latest GitHub release (recommended — pinned, no git needed at install time)
+pip install https://github.com/yu911517778-a11y/erdi-lrf-drivers/releases/download/v0.1.0/erdi_lrf-0.1.0-py3-none-any.whl
+
+# or track main directly
+pip install git+https://github.com/yu911517778-a11y/erdi-lrf-drivers
+```
+
+Arduino: install via the Arduino IDE **Library Manager** — search `ErdiLRF`
+([submission pending arduino/library-registry review](https://github.com/arduino/library-registry));
+until it is indexed, install with `arduino-cli lib install --git-url
+https://github.com/yu911517778-a11y/erdi-lrf-drivers.git` (points at the repo
+root — use `--git-url ...#main:arduino/ErdiLRF` if your `arduino-cli` version
+needs the subfolder pinned) or by copying `arduino/ErdiLRF` into your
+`libraries/` folder.
+
+PlatformIO: `pio pkg install --library "yu911517778-a11y/erdi-lrf-drivers"` (Git
+URL form; see [platformio.ini example](#arduino)) — Registry-name install
+(`pio pkg install --library "erdi-lrf"`) is pending publication to the
+[PlatformIO Registry](https://registry.platformio.org).
+
+All release artifacts (wheel + sdist): <https://github.com/yu911517778-a11y/erdi-lrf-drivers/releases>
+· Hardware and datasheets: <https://erdilrf.com>
+
 ## Quick start
 
 ### Python
@@ -211,6 +237,10 @@ quotations is in the two protocol documents.
     verified against the manuals' golden frames and the transport against a fake
     serial port; the ROS 2 package is statically checked but has not been run in
     a ROS 2 environment here. Bench reports and pull requests are welcome.
+
+## Contact
+
+ERDI TECH LTD · 905 nm laser rangefinder modules · tommy@erdimail.com · WhatsApp +86 133 0819 5790 · erdilrf.com
 
 ## Contributing
 
