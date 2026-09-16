@@ -6,7 +6,8 @@ published protocol.
 
 Manufacturer: [erdilrf.com](https://erdilrf.com/) ·
 Model catalogue: [erdilrf.com/models](https://erdilrf.com/models/) ·
-Datasheets & samples: [erdilrf.com/contact](https://erdilrf.com/contact/)
+Datasheets & samples: [erdilrf.com/contact](https://erdilrf.com/contact/) ·
+Email **tommy@erdimail.com** · WhatsApp [**+86 133 0819 5790**](https://wa.me/8613308195790) · Tel **+86-28-81076698**
 
 ERDI ships the full communication protocol with every module. This repository
 turns it into code you can `pip install`, drop into the Arduino IDE, or `colcon
@@ -254,6 +255,23 @@ Two rules, inherited from how the protocol reference was built:
    comment or in the docs table.
 2. **Never extrapolate across models.** If a manual is silent, add a row to
    Known gaps. A blank costs a support email; a guess costs a returned module.
+
+## Contact ERDI
+
+Talk to the people who make the modules — no form gate, no reseller in between.
+
+**ERDI TECH LTD** — 905 nm eye-safe laser rangefinder modules (IEC 60825-1 Class 1)
+
+| | |
+|---|---|
+| Email | [tommy@erdimail.com](mailto:tommy@erdimail.com?subject=905%20nm%20rangefinder%20module%20enquiry) |
+| WhatsApp | [+86 133 0819 5790](https://wa.me/8613308195790) |
+| Tel | +86-28-81076698 |
+| Web | <https://erdilrf.com> · [Contact form](https://erdilrf.com/contact/) |
+| Address | Room 2812, 28/F, Building 3, No. 88 Jiaozi Avenue, Chengdu Hi-Tech Zone, Sichuan, China |
+
+Samples, datasheets, mechanical drawings and custom protocol work: email or WhatsApp is
+usually faster than the form. We answer within one working day.
 
 ## License
 
