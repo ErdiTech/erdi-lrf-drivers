@@ -50,18 +50,21 @@ pip install https://github.com/yu911517778-a11y/erdi-lrf-drivers/releases/downlo
 pip install "git+https://github.com/yu911517778-a11y/erdi-lrf-drivers#subdirectory=python"
 ```
 
-Arduino: install via the Arduino IDE **Library Manager** — search `ErdiLRF`
-([submission pending arduino/library-registry review](https://github.com/arduino/library-registry));
-until it is indexed, install with `arduino-cli lib install --git-url
-https://github.com/yu911517778-a11y/erdi-lrf-drivers.git` (points at the repo
-root — use `--git-url ...#main:arduino/ErdiLRF` if your `arduino-cli` version
-needs the subfolder pinned) or by copying `arduino/ErdiLRF` into your
-`libraries/` folder.
+Arduino: the library now lives in its own repository,
+**[yu911517778-a11y/ErdiLRF](https://github.com/yu911517778-a11y/ErdiLRF)**
+(split out on 2026-09-17 so it could be registered — Arduino Library Manager
+and the PlatformIO Registry both require a dedicated, tag-releasing repo, not
+a subfolder of a mono-repo). Install via the Arduino IDE **Library Manager** —
+search `ErdiLRF` and install (submission
+[merged 2026-09-17](https://github.com/arduino/library-registry/pull/9133);
+indexing is hourly). Or: `arduino-cli lib install --git-url
+https://github.com/yu911517778-a11y/ErdiLRF.git`, or copy the repo into your
+`libraries/` folder. See that repo's README for details.
 
-PlatformIO: `pio pkg install --library "yu911517778-a11y/erdi-lrf-drivers"` (Git
-URL form; see [platformio.ini example](#arduino)) — Registry-name install
-(`pio pkg install --library "erdi-lrf"`) is pending publication to the
-[PlatformIO Registry](https://registry.platformio.org).
+PlatformIO: published to the [PlatformIO Registry](https://registry.platformio.org)
+as `erdi-tech/ErdiLRF` — `pio pkg install --library "erdi-tech/ErdiLRF"`, or by
+Git URL: `pio pkg install --library "https://github.com/yu911517778-a11y/ErdiLRF.git"`
+(see [platformio.ini example](#arduino)).
 
 All release artifacts (wheel + sdist): <https://github.com/yu911517778-a11y/erdi-lrf-drivers/releases>
 · Hardware and datasheets: <https://erdilrf.com>
@@ -98,8 +101,11 @@ or your own transport.
 
 ### Arduino
 
-Copy `arduino/ErdiLRF` into your `libraries/` folder (or
-`arduino-cli lib install --git-url` this repository), then:
+The Arduino library is maintained standalone at
+[yu911517778-a11y/ErdiLRF](https://github.com/yu911517778-a11y/ErdiLRF) (see
+[`arduino/README.md`](arduino/README.md)). Install it via Library Manager,
+`arduino-cli lib install --git-url https://github.com/yu911517778-a11y/ErdiLRF.git`,
+or copy that repo into your `libraries/` folder, then:
 
 ```cpp
 #include <ErdiLRF.h>
