@@ -206,7 +206,7 @@ Questions, samples, datasheets and custom protocol work:
 
 ## Further reading
 
-Technical note with DOI (frame families, per-model units, manual inconsistencies): [10.5281/zenodo.23297197](https://doi.org/10.5281/zenodo.23297197).
+Technical note with DOI (frame families, per-model units, manual inconsistencies): [10.5281/zenodo.23297197](https://doi.org/10.5281/zenodo.23297197). Software archive of v0.1.0: [10.5281/zenodo.23297253](https://doi.org/10.5281/zenodo.23297253).
 
 Background write-ups on the manufacturer's site. They cover the same wire facts
 this repository implements, from the integration side rather than the code side:
