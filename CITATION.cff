@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use these drivers, please cite the accompanying technical note."
+title: "erdi-lrf-drivers: Python, Arduino and ROS 2 drivers for ERDI 905 nm UART laser rangefinder modules"
+type: software
+authors:
+  - name: "ERDI Technology (Chengdu)"
+repository-code: "https://github.com/yu911517778-a11y/erdi-lrf-drivers"
+url: "https://erdilrf.com/"
+license: MIT
+preferred-citation:
+  type: report
+  title: "Reading 905 nm UART Laser Rangefinder Modules: Two Frame Families, Per-Model Units, and Manual Inconsistencies"
+  authors:
+    - name: "ERDI Technology (Chengdu)"
+  year: 2026
+  doi: "10.5281/zenodo.23297197"
+  institution:
+    name: "ERDI Technology (Chengdu)"
