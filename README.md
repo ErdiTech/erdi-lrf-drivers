@@ -1,25 +1,23 @@
-# erdi-lrf-drivers
+# ERDI laser rangefinder drivers
 
-Open-source Python, Arduino and ROS 2 drivers for **ERDI 905 nm laser
-rangefinder modules** — both published protocol families, all 22 models with a
-published protocol.
+Python, Arduino and ROS 2 integration for the ERDI 905 nm modules listed in this
+repository's model reference. Maintained by ERDI TECH LTD.
 
-Manufacturer: [erdilrf.com](https://erdilrf.com/) ·
-Model catalogue: [erdilrf.com/models](https://erdilrf.com/models/) ·
-Datasheets & samples: [erdilrf.com/contact](https://erdilrf.com/contact/) ·
-Email **tommy@erdimail.com** · WhatsApp [**+86 133 0819 5790**](https://wa.me/8613308195790)
+[Quick start](#quick-start) · [Model reference](docs/models.md) · [Protocol A](docs/protocol-A-55AA.md) · [Protocol B](docs/protocol-B-5C.md) · [Known gaps](#known-gaps)
 
-ERDI ships the full communication protocol with every module. This repository
-turns it into code you can `pip install`, drop into the Arduino IDE, or `colcon
-build`, so integration takes an afternoon instead of an email thread.
+![Integration workflow: select the exact model, confirm the interface, choose a driver, validate the result.](docs/integration-flow.svg)
 
-* Two protocol families cover the whole catalogue:
-  **[A — 8-byte `55 AA` command/response](docs/protocol-A-55AA.md)** and
-  **[B — free-running `5C` data frames](docs/protocol-B-5C.md)**.
-* Every constant is transcribed from the model's own manual and cited in the
-  docs and in the source. Nothing is extrapolated from a sibling model.
-* Where a manual is silent or contradicts itself, the driver **says so and
-  refuses to guess** — see [Known gaps](#known-gaps).
+### Choose your starting point
+
+| Environment | Start here | Next check |
+|---|---|---|
+| Python / PC / Raspberry Pi | [Install](#install-in-one-command), then [Python](#python) | Select the exact model and serial port |
+| Arduino | [ErdiLRF examples](https://github.com/ErdiTech/ErdiLRF/tree/main/examples) | Confirm the board UART and module signal levels |
+| ROS 2 | [ROS 2](#ros-2) | Read the documented runtime validation limits |
+
+The model table and protocol notes cite the source manuals. Source discrepancies
+remain visible in [Known gaps](#known-gaps); software tests do not establish live
+hardware performance.
 
 ## Supported models
 
@@ -28,7 +26,7 @@ Full table with baud rates, frame layouts, units and ranges:
 
 | Family | Models | Frame | Default baud | Raw unit |
 |---|---|---|---|---|
-| **A** — `55 AA` command/response | LR1000E2/E4, LR1200E2/E4, LR1500E2/E4, LR2000E2/E4, LRF1200A1, LRF3000A1, SPD1200N0/N2/N4, SPD1200D03 | 8 bytes | 115200 | value × 10 (0.1 m/count) |
+| **A** — `55 AA` command/response | LR1000E2/E4, LR1200E2/E4, LR1500E2/E4, LR2000E2/E4, LRF1200A1, LRF3000A1, SPD1200N0/N2/N4, SPD1200D03 | 8 bytes | 115200 for the listed models except SPD1200D03; confirm its delivered setting | value × 10 (0.1 m/count), except SPD1200D03: scaling not published |
 | **B** — `5C` free-running stream | LRF50H, LRF100H, LRF200H, LRF300H, LRF600H, LRF1500H | 4 bytes (LRF1500H: 5) | 460800 | **centimetres** |
 | **B** — `5C` free-running stream | LRF22VB, LRF50VB | 4 bytes | 460800 | **millimetres** |
 
@@ -43,30 +41,30 @@ raises a clear error rather than falling back to a similar model.
 ## Install in one command
 
 ```bash
-# from the latest GitHub release (recommended — pinned, no git needed at install time)
-pip install https://github.com/yu911517778-a11y/erdi-lrf-drivers/releases/download/v0.1.0/erdi_lrf-0.1.0-py3-none-any.whl
+# from the v0.1.0 release (pinned; no git needed at install time)
+pip install https://github.com/ErdiTech/erdi-lrf-drivers/releases/download/v0.1.0/erdi_lrf-0.1.0-py3-none-any.whl
 
 # or track main directly
-pip install "git+https://github.com/yu911517778-a11y/erdi-lrf-drivers#subdirectory=python"
+pip install "git+https://github.com/ErdiTech/erdi-lrf-drivers#subdirectory=python"
 ```
 
 Arduino: the library now lives in its own repository,
-**[yu911517778-a11y/ErdiLRF](https://github.com/yu911517778-a11y/ErdiLRF)**
+**[ErdiTech/ErdiLRF](https://github.com/ErdiTech/ErdiLRF)**
 (split out on 2026-09-17 so it could be registered — Arduino Library Manager
 and the PlatformIO Registry both require a dedicated, tag-releasing repo, not
 a subfolder of a mono-repo). Install via the Arduino IDE **Library Manager** —
 search `ErdiLRF` and install (submission
 [merged 2026-09-17](https://github.com/arduino/library-registry/pull/9133);
-indexing is hourly). Or: `arduino-cli lib install --git-url
-https://github.com/yu911517778-a11y/ErdiLRF.git`, or copy the repo into your
+check the local index before installing). Or: `arduino-cli lib install --git-url
+https://github.com/ErdiTech/ErdiLRF.git`, or copy the repo into your
 `libraries/` folder. See that repo's README for details.
 
 PlatformIO: published to the [PlatformIO Registry](https://registry.platformio.org)
 as `erdi-tech/ErdiLRF` — `pio pkg install --library "erdi-tech/ErdiLRF"`, or by
-Git URL: `pio pkg install --library "https://github.com/yu911517778-a11y/ErdiLRF.git"`
+Git URL: `pio pkg install --library "https://github.com/ErdiTech/ErdiLRF.git"`
 (see [platformio.ini example](#arduino)).
 
-All release artifacts (wheel + sdist): <https://github.com/yu911517778-a11y/erdi-lrf-drivers/releases>
+All release artifacts (wheel + sdist): <https://github.com/ErdiTech/erdi-lrf-drivers/releases>
 · Hardware and datasheets: <https://erdilrf.com>
 
 ## Quick start
@@ -102,9 +100,9 @@ or your own transport.
 ### Arduino
 
 The Arduino library is maintained standalone at
-[yu911517778-a11y/ErdiLRF](https://github.com/yu911517778-a11y/ErdiLRF) (see
+[ErdiTech/ErdiLRF](https://github.com/ErdiTech/ErdiLRF) (see
 [`arduino/README.md`](arduino/README.md)). Install it via Library Manager,
-`arduino-cli lib install --git-url https://github.com/yu911517778-a11y/ErdiLRF.git`,
+`arduino-cli lib install --git-url https://github.com/ErdiTech/ErdiLRF.git`,
 or copy that repo into your `libraries/` folder, then:
 
 ```cpp
@@ -168,7 +166,7 @@ Parameters: `port`, `model`, `baud` (0 = model default), `rate`, `frame_id`,
 * [docs/protocol-B-5C.md](docs/protocol-B-5C.md) — data frames, the `Check_Sum`
   function, the `5A` command table, baud codes, frequency divisors, the VB I²C
   register map.
-* [docs/models.md](docs/models.md) — all 24 catalogue models with their wire
+* [docs/models.md](docs/models.md) — the 24 models documented in this repository with their wire
   facts and their hardware pages.
 
 Every table row carries the manual sentence it came from.
@@ -292,9 +290,10 @@ Two rules, inherited from how the protocol reference was built:
 
 ## Contact ERDI
 
-Talk to the people who make the modules — no form gate, no reseller in between.
+For model documents and configuration questions:
 
-**ERDI TECH LTD** — 905 nm eye-safe laser rangefinder modules (IEC 60825-1 Class 1)
+**ERDI TECH LTD** — 905 nm laser rangefinder modules. Check the selected model's
+documentation for its safety classification and use conditions.
 
 | | |
 |---|---|
@@ -303,8 +302,8 @@ Talk to the people who make the modules — no form gate, no reseller in between
 | Web | <https://erdilrf.com> · [Contact form](https://erdilrf.com/contact/) |
 | Address | Room 2812, 28/F, Building 3, No. 88 Jiaozi Avenue, Chengdu Hi-Tech Zone, Sichuan, China |
 
-Samples, datasheets, mechanical drawings and custom protocol work: email or WhatsApp is
-usually faster than the form. We answer within one working day.
+For samples, datasheets, mechanical drawings or protocol questions, use the
+contact details above and include the exact model and application.
 
 ## License
 
