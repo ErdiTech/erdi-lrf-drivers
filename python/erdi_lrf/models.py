@@ -16,7 +16,7 @@ uniform:
 Where the manual does not state something, the field is ``None`` and the gap is
 recorded in ``notes`` -- it is never filled in by inference.
 
-Source archive: the ERDI protocol knowledge base, ``protocols/_source/<MODEL>.txt``
+Source archive: ERDI engineering notes, one file per model
 (verbatim transcription of the manual's communication-protocol section).
 """
 
@@ -388,7 +388,7 @@ MODELS: dict = {
             ),
         },
         notes=(
-            "The structured knowledge base records baud='60' for this model.  That "
+            "Our engineering notes record baud='60' for this model.  That "
             "is an extraction artefact from the baud-rate code table "
             "('60 00 | 96 | 9600'); the manual prose states 460800 (adjustable), "
             "which is what this driver uses.",
@@ -459,7 +459,7 @@ MODELS: dict = {
             "iic_address": "The default address is 0x52 (7bit address mode).",
         },
         notes=(
-            "The structured knowledge base lists out_of_range as unresolved for "
+            "Our engineering notes list out_of_range as unresolved for "
             "this model; the manual prose does state 'When out of range, output "
             "would be 50000', which is what this driver uses.",
             "MANUAL DISCREPANCY (reported, not resolved): the printed 'Reading "

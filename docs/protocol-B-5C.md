@@ -157,5 +157,5 @@ included so an I²C integrator does not have to open the PDF.
 | `LRF300H`, `LRF600H`, `LRF1500H` frequency | No divisor formula published; set/read frequency is not exposed for these models. |
 | `LRF50H`, `LRF100H`, `LRF300H`, `LRF600H`, `LRF1500H` I²C address | Not stated in their manuals (`LRF200H` states `0x33`, the VB series `0x52`). Nothing is extrapolated. |
 | Start/stop ranging | Documented only for `LRF50H`, `LRF22VB` and `LRF50VB`. The other five free-run from power-up and the drivers do not send a start command to them. |
-| `LRF22VB` default output frequency | Listed as unresolved in the knowledge base; the supported set is documented (200/100/50/20/10/1 Hz) but the power-on default is not. |
+| `LRF22VB` default output frequency | Listed as unresolved in our engineering notes; the supported set is documented (200/100/50/20/10/1 Hz) but the power-on default is not. |
 | `LRF50VB` supported frequency list | The set-frequency row lists 100/50/20/10/1 Hz and the read-frequency row lists 200/100/50/20/10/1 Hz. Both are reproduced; the manual does not reconcile them. |
