@@ -1,4 +1,4 @@
-# ERDI laser rangefinder drivers
+﻿# ERDI laser rangefinder drivers
 
 Python, Arduino and ROS 2 integration for the ERDI 905 nm modules listed in this
 repository's model reference. Maintained by ERDI TECH LTD.
@@ -229,6 +229,18 @@ this repository implements, from the integration side rather than the code side:
 * [Update rate on moving
   platforms](https://erdilrf.com/knowledge/rangefinder-update-rate-moving-platforms/)
   — what the `rate` parameter of the ROS 2 node is actually bounded by.
+
+* [Raspberry Pi UART integration](https://erdilrf.com/knowledge/raspberry-pi-laser-rangefinder-uart/)
+  — the same frame parser on a Linux host, with the port, permission and ROS 2
+  checks that differ from Arduino.
+* [PX4 rangefinder integration](https://erdilrf.com/knowledge/px4-laser-rangefinder-integration/)
+  — the three routes into PX4 and the parameters each one needs.
+* [dToF vs triangulation](https://erdilrf.com/knowledge/dtof-vs-triangulation-distance-sensor/)
+  — why a single-point DToF module is not a scanning LiDAR, and where the
+  comparison breaks down.
+* [Beam divergence and spot size](https://erdilrf.com/knowledge/rangefinder-beam-divergence-spot-size/)
+  — the footprint at range, and why a small target at 3 km is a geometry problem
+  before it is a driver problem.
 
 ## Known gaps
 
