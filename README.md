@@ -19,6 +19,16 @@ The model table and protocol notes cite the source manuals. Source discrepancies
 remain visible in [Known gaps](#known-gaps); software tests do not establish live
 hardware performance.
 
+## Field notes
+
+Engineering notes for choosing, wiring and validating a module:
+
+- [Evaluation checklist](docs/evaluation-checklist.md) - what to test before design freeze
+- [905 nm vs 1535 nm](docs/905nm-vs-1535nm.md) - wavelength trade-off and safety scope
+- [Flight-controller integration](docs/flight-controller-integration.md) - PX4 / ArduPilot / ROS 2 patterns
+- [UART hardware notes](docs/uart-hardware-notes.md) - levels, grounds, cable, power
+- [Field troubleshooting](docs/field-troubleshooting.md) - symptom to cause table
+
 ## Supported models
 
 Full table with baud rates, frame layouts, units and ranges:
