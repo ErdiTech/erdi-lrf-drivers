@@ -12,6 +12,9 @@ claim that depends on a model is left to that model's document.
 | [Flight-controller integration](flight-controller-integration.md) | You need the module in PX4, ArduPilot or ROS 2 |
 | [UART hardware notes](uart-hardware-notes.md) | You are wiring the module for the first time |
 | [Field troubleshooting](field-troubleshooting.md) | Bytes arrive but the numbers are wrong |
+| [Mixed-target return validation](mixed-target-return-validation.md) | The beam covers two surfaces and the number jumps |
+| [Blind zone and minimum range](blind-zone-and-minimum-range.md) | The closest metre is unreliable |
+| [Request/response association](request-response-association.md) | Several modules share one UART, or replies arrive late |
 
 Protocol references live in [Protocol A](protocol-A-55AA.md) and
 [Protocol B](protocol-B-5C.md); the model table is in [models](models.md).
