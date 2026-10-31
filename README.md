@@ -1,7 +1,11 @@
-﻿# ERDI laser rangefinder drivers
+# ERDI laser rangefinder drivers
 
-Python, Arduino and ROS 2 integration for the ERDI 905 nm modules listed in this
-repository's model reference. Maintained by ERDI TECH LTD.
+Open-source UART drivers for 22 ERDI TECH LTD 905 nm laser rangefinder modules
+(LR1000E-LR2000E, LRF1200A1, LRF3000A1, SPD1200N, LRF50H-LRF1500H, LRF22VB, LRF50VB),
+with a Python library and CLI, an Arduino / ESP32 library and a ROS 2 `Range` node.
+Two UART protocol families are covered (`55 AA` command/response at 115200 baud and
+`5C` free-running stream at 460800 baud); see the [model reference](docs/models.md)
+and the matching [erdilrf.com model pages](https://erdilrf.com/models/?utm_source=github&utm_medium=readme&utm_campaign=erdi-lrf-drivers).
 
 [Quick start](#quick-start) · [Model reference](docs/models.md) · [Protocol A](docs/protocol-A-55AA.md) · [Protocol B](docs/protocol-B-5C.md) · [Known gaps](#known-gaps)
 
@@ -18,6 +22,33 @@ repository's model reference. Maintained by ERDI TECH LTD.
 The model table and protocol notes cite the source manuals. Source discrepancies
 remain visible in [Known gaps](#known-gaps); software tests do not establish live
 hardware performance.
+
+### Wiring (generic UART)
+
+```
+ Module                      Host (Arduino / ESP32 / Raspberry Pi / flight-controller TELEM port)
+ -------                     ------------------------------------------------------------------
+ TX   ------------------->   RX
+ RX   <-------------------   TX
+ GND  --------------------   GND            (one common ground, close to the module)
+ VCC  <-- own regulator      (supply per the model's manual; do NOT take it from the signal pins)
+```
+
+Cross TX and RX, share ground, and check the logic level of the module's TX line against
+your host before connecting: supply voltage is not the UART voltage (use a level shifter if
+they differ). Pin order and levels are model-specific, so take them from the model page
+on [erdilrf.com](https://erdilrf.com/models/?utm_source=github&utm_medium=readme&utm_campaign=erdi-lrf-drivers)
+and read [UART hardware notes](docs/uart-hardware-notes.md) first.
+
+### Examples by platform
+
+| Platform | Example | Notes |
+|---|---|---|
+| Arduino Uno / Mega | [`BasicMeasure`](https://github.com/ErdiTech/ErdiLRF/tree/main/examples/BasicMeasure) | Hardware UART for family B (460800 baud) |
+| ESP32 | [`BasicMeasure`](https://github.com/ErdiTech/ErdiLRF/tree/main/examples/BasicMeasure) with `Serial1` / `Serial2` | Pass the RX/TX pins to `Serial1.begin()` |
+| Raspberry Pi / PC | `erdi-lrf --port /dev/ttyUSB0 --model LRF3000A1 measure` | [Python](#python) |
+| ROS 2 | `ros2 run erdi_lrf_ros2 range_node` | [ROS 2](#ros-2) |
+| Pixhawk / PX4 / ArduPilot | [Flight-controller integration](docs/flight-controller-integration.md) | No native driver is claimed; the recommended first path is a companion computer publishing MAVLink `DISTANCE_SENSOR` |
 
 ## Field notes
 
@@ -75,7 +106,7 @@ Git URL: `pio pkg install --library "https://github.com/ErdiTech/ErdiLRF.git"`
 (see [platformio.ini example](#arduino)).
 
 All release artifacts (wheel + sdist): <https://github.com/ErdiTech/erdi-lrf-drivers/releases>
-· Hardware and datasheets: <https://erdilrf.com>
+· Hardware and datasheets: <https://erdilrf.com/?utm_source=github&utm_medium=readme&utm_campaign=erdi-lrf-drivers>
 
 ## Quick start
 
@@ -321,7 +352,7 @@ documentation for its safety classification and use conditions.
 |---|---|
 | Email | [tommy@erdimail.com](mailto:tommy@erdimail.com?subject=905%20nm%20rangefinder%20module%20enquiry) |
 | WhatsApp | [+86 133 0819 5790](https://wa.me/8613308195790) |
-| Web | <https://erdilrf.com> · [Contact form](https://erdilrf.com/contact/) |
+| Web | <https://erdilrf.com/?utm_source=github&utm_medium=readme&utm_campaign=erdi-lrf-drivers> · [Contact form](https://erdilrf.com/contact/) |
 | Address | Room 2812, 28/F, Building 3, No. 88 Jiaozi Avenue, Chengdu Hi-Tech Zone, Sichuan, China |
 
 For samples, datasheets, mechanical drawings or protocol questions, use the
