@@ -9,4 +9,4 @@ erdi-lrf --port COM3 --model LRF3000A1 measure
 ```
 
 Full documentation, protocol tables and the hardware catalogue are in the
-repository root: <https://github.com/yu911517778-a11y/erdi-lrf-drivers>.
+repository root: <https://github.com/ErdiTech/erdi-lrf-drivers>.

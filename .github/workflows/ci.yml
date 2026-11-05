@@ -1,0 +1,26 @@
+name: ci
+on: [push, pull_request]
+jobs:
+  python:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.9", "3.11", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "${{ matrix.python }}" }
+      - run: pip install -e "python[test]"
+      - run: cd python && python -m pytest -q
+      - run: PYTHONPATH=python python -m pytest -q ros2/erdi_lrf_ros2/test
+  arduino:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: arduino/compile-sketches@v1
+        with:
+          fqbn: arduino:avr:uno
+          libraries: |
+            - source-path: arduino/ErdiLRF
+          sketch-paths: |
+            - arduino/ErdiLRF/examples/BasicMeasure

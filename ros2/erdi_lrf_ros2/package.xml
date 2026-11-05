@@ -8,7 +8,7 @@
   <!-- Enquiries and support: https://erdilrf.com/contact/ -->
   <license>MIT</license>
   <url type="website">https://erdilrf.com</url>
-  <url type="repository">https://github.com/yu911517778-a11y/erdi-lrf-drivers</url>
+  <url type="repository">https://github.com/ErdiTech/erdi-lrf-drivers</url>
 
   <exec_depend>rclpy</exec_depend>
   <exec_depend>sensor_msgs</exec_depend>

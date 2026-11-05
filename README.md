@@ -1,5 +1,7 @@
 # ERDI laser rangefinder drivers
 
+[![ci](https://github.com/ErdiTech/erdi-lrf-drivers/actions/workflows/ci.yml/badge.svg)](https://github.com/ErdiTech/erdi-lrf-drivers/actions/workflows/ci.yml) [![PyPI](https://img.shields.io/pypi/v/erdi-lrf)](https://pypi.org/project/erdi-lrf/)
+
 Open-source UART drivers for 22 ERDI TECH LTD 905 nm laser rangefinder modules
 (LR1000E-LR2000E, LRF1200A1, LRF3000A1, SPD1200N, LRF50H-LRF1500H, LRF22VB, LRF50VB),
 with a Python library and CLI, an Arduino / ESP32 library and a ROS 2 `Range` node.
@@ -83,7 +85,7 @@ raises a clear error rather than falling back to a similar model.
 
 ```bash
 # from the v0.1.0 release (pinned; no git needed at install time)
-pip install https://github.com/ErdiTech/erdi-lrf-drivers/releases/download/v0.1.0/erdi_lrf-0.1.0-py3-none-any.whl
+pip install erdi-lrf                # from PyPI
 
 # or track main directly
 pip install "git+https://github.com/ErdiTech/erdi-lrf-drivers#subdirectory=python"
@@ -357,6 +359,17 @@ documentation for its safety classification and use conditions.
 
 For samples, datasheets, mechanical drawings or protocol questions, use the
 contact details above and include the exact model and application.
+
+## Support
+
+If these drivers save you time, a tip is appreciated (send the matching coin on the matching network only):
+
+| Network | Address |
+|---|---|
+| USDT (TRC20) | `TNGdTwE6opH6rmUyoG1JUR7FSyEb4k273R` |
+| USDT (ERC20 / BEP20 / Polygon), ETH (Ethereum / Arbitrum / Base) | `0x59c43144a862b351fa1086ae842d1327c9d91613` |
+| BTC | `1RS6tWXHregLfEsiPzVUCUBuhgDg5uTSV` |
+| USDT (Solana) | `HZguEXfTtLChNdJTxAYCbcGscaqikz8JYrEpUhEyeVd9` |
 
 ## License
 

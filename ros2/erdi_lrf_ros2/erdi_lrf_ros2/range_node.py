@@ -94,23 +94,44 @@ class ErdiRangeNode(Node):
         return msg
 
     def on_timer(self):
+        # An ended continuous stream is a terminal state, not permission to
+        # silently switch to single-shot commands on the next timer callback.
+        if self.continuous and self._stream is None:
+            return
         try:
             if self._stream is not None:
                 m = next(self._stream)
             else:
                 m = self.lrf.measure(raise_on_failure=False)
-                if self.spec.family == 'A' and not m.ok:
-                    self.get_logger().debug(
-                        f'measurement failed, STA=0x{m.status:02X}')
-                    return
+            if self.spec.family == 'A' and not m.ok:
+                self.get_logger().debug(
+                    f'measurement failed, STA=0x{m.status:02X}')
+                return
             if getattr(m, 'out_of_range', False):
                 # Report the documented marker as +inf rather than as a
                 # plausible-looking distance.
                 self.publisher.publish(self._make_msg(float('inf')))
                 return
             self.publisher.publish(self._make_msg(m.metres))
+        except StopIteration:
+            self._stop_continuous('continuous stream ended; restart the node to resume')
         except ErdiLrfError as exc:
-            self.get_logger().warn(str(exc))
+            if self.continuous:
+                self._stop_continuous(
+                    f'continuous stream stopped: {exc}; restart the node to resume')
+            else:
+                self.get_logger().warn(str(exc))
+
+    def _stop_continuous(self, reason):
+        stream = self._stream
+        self._stream = None
+        self.timer.cancel()
+        try:
+            if stream is not None:
+                stream.close()
+        except Exception as exc:  # cleanup must not resurrect a dead stream
+            self.get_logger().warn(f'continuous stream cleanup failed: {exc}')
+        self.get_logger().warn(reason)
 
     def destroy_node(self):
         try:
