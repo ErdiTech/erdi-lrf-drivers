@@ -74,7 +74,14 @@ repository never derives the unit from the family.
 
 The factory's own serial tool confirms the VB row: its `VB22A(cm)` display mode
 divides the millimetre frame value by 10 on the PC and sends nothing to the
-module. See [vendor-host-tool.md](vendor-host-tool.md).
+module. See [vendor-host-tool.md](vendor-host-tool.md). A bench log from the
+factory confirms both rows against the same 1.9 m wall: an LRF22VB logs
+~1709 in the tool's `(mm)` entry and an LRF50H logs ~196 as `WT50A`, so the
+VB frame is millimetres and the H frame is centimetres. That LRF50H log also
+holds a few checksum-valid frames far beyond the 50 m rating that are not
+`0xFFFF`, so a driver should reject frames past the configured maximum rather
+than average them. Files and numbers:
+[evidence/ardupilot-bench-20261105](evidence/ardupilot-bench-20261105/README.md).
 
 ## Command frame
 
