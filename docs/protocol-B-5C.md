@@ -72,6 +72,10 @@ The same four bytes `5C 02 11 EC` mean **43.54 m** on an H module and **4.354 m*
 on a VB module. Reading the wrong table is a 10x error, which is why this
 repository never derives the unit from the family.
 
+The factory's own serial tool confirms the VB row: its `VB22A(cm)` display mode
+divides the millimetre frame value by 10 on the PC and sends nothing to the
+module. See [vendor-host-tool.md](vendor-host-tool.md).
+
 ## Command frame
 
 ```
@@ -159,3 +163,4 @@ included so an I²C integrator does not have to open the PDF.
 | Start/stop ranging | Documented only for `LRF50H`, `LRF22VB` and `LRF50VB`. The other five free-run from power-up and the drivers do not send a start command to them. |
 | `LRF22VB` default output frequency | Listed as unresolved in our engineering notes; the supported set is documented (200/100/50/20/10/1 Hz) but the power-on default is not. |
 | `LRF50VB` supported frequency list | The set-frequency row lists 100/50/20/10/1 Hz and the read-frequency row lists 200/100/50/20/10/1 Hz. Both are reproduced; the manual does not reconcile them. |
+| VB `55 AA 81 00 FA` poll | The factory serial tool sends these five bytes once a second to VB modules and accepts an 8-byte `55 AA … FA` reply as a millimetre distance. No VB manual describes it; the drivers do not use it. See [vendor-host-tool.md](vendor-host-tool.md). |

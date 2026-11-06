@@ -16,3 +16,9 @@ distance was changed by hand.
 Source: three phone videos (49 s + 42 s + 17 s, 720x1280) and two photos. The vendor
 tool plots the decoded distance; it was not used to save the raw byte stream, so the
 raw `0x5C` frames are not part of this set.
+
+Follow-up from the factory (2026-11-06): the wall was **1.9 m** from the modules, and
+the LRF22VB run used the tool's `VB22A(cm)` display entry, which is why its distance
+reads in the 190s. That `(cm)` entry is a display-side division by 10 of the module's
+millimetre frames — the tool sends no unit command to the module. Details, read from
+the tool's own compiled code, are in [vendor-host-tool.md](../../vendor-host-tool.md).

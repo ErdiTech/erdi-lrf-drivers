@@ -15,6 +15,7 @@ claim that depends on a model is left to that model's document.
 | [Mixed-target return validation](mixed-target-return-validation.md) | The beam covers two surfaces and the number jumps |
 | [Blind zone and minimum range](blind-zone-and-minimum-range.md) | The closest metre is unreliable |
 | [Request/response association](request-response-association.md) | Several modules share one UART, or replies arrive late |
+| [Vendor host tool](vendor-host-tool.md) | You are comparing a driver's numbers with the factory serial tool, or asking whether VB modules send mm or cm |
 
 Protocol references live in [Protocol A](protocol-A-55AA.md) and
 [Protocol B](protocol-B-5C.md); the model table is in [models](models.md).
