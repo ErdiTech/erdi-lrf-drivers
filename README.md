@@ -334,6 +334,20 @@ quotations is in the two protocol documents.
     serial port; the ROS 2 package is statically checked but has not been run in
     a ROS 2 environment here. Bench reports and pull requests are welcome.
 
+## Ecosystem
+
+Companion projects built around these drivers:
+
+- [erdi-lrf-pixhawk-ardupilot](https://github.com/Tommyapi/erdi-lrf-pixhawk-ardupilot) - Pixhawk / ArduPilot laser altimeter wiring and parameters
+- [erdi-lrf-ros2-examples](https://github.com/Tommyapi/erdi-lrf-ros2-examples) - ROS 2 range node, RViz config, filters
+- [erdi-lrf-raspberry-pi-python](https://github.com/Tommyapi/erdi-lrf-raspberry-pi-python) - Raspberry Pi UART logger and systemd service
+- [erdi-lrf-esp32-micropython](https://github.com/Tommyapi/erdi-lrf-esp32-micropython) - ESP32 MicroPython driver
+- [erdi-lrf-stm32-hal](https://github.com/Tommyapi/erdi-lrf-stm32-hal) - STM32 HAL driver with circular DMA
+- [erdi-lrf-home-assistant](https://github.com/Tommyapi/erdi-lrf-home-assistant) - ESPHome component for Home Assistant
+- [lrf-uart-protocol-decoder](https://github.com/Tommyapi/lrf-uart-protocol-decoder) - WebSerial and Python protocol decoder ([live](https://tommyapi.github.io/lrf-uart-protocol-decoder/))
+- [laser-rangefinder-module-database](https://github.com/Tommyapi/laser-rangefinder-module-database) - open dataset of 109 modules ([sortable table](https://tommyapi.github.io/laser-rangefinder-module-database/))
+- [awesome-laser-rangefinder](https://github.com/Tommyapi/awesome-laser-rangefinder) and [drone altimeter guide](https://github.com/Tommyapi/drone-altimeter-laser-rangefinder-guide)
+
 ## Contributing
 
 Two rules, inherited from how the protocol reference was built:
