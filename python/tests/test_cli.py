@@ -9,15 +9,16 @@ def test_models_lists_the_whole_catalogue(capsys):
     assert main(["models"]) == 0
     out = capsys.readouterr().out
     assert "LRF3000A1" in out
-    assert "LRF10VB" in out and "no published protocol" in out
+    assert "LRF10VB" in out
+    assert "SPD1200S2G" in out and "no published protocol" in out
 
 
 def test_models_json(capsys):
     import json
     assert main(["models", "--json"]) == 0
     data = json.loads(capsys.readouterr().out)
-    assert len(data["published"]) == 22
-    assert len(data["unpublished"]) == 2
+    assert len(data["published"]) == 23
+    assert len(data["unpublished"]) == 1
 
 
 @pytest.mark.parametrize("argv", [
@@ -37,7 +38,7 @@ def test_info_reports_the_spd1200d03_baud_conflict(capsys):
 
 
 def test_info_on_an_unpublished_model_fails_loudly(capsys):
-    assert main(["info", "--model", "LRF10VB"]) == 1
+    assert main(["info", "--model", "SPD1200S2G"]) == 1
     assert "not published" in capsys.readouterr().err
 
 

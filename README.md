@@ -77,9 +77,11 @@ Full table with baud rates, frame layouts, units and ranges:
 > an H-series module and **4.354 m** on a VB-series module. Always select your
 > model by name; never let a driver infer it from the family.
 
-`LRF10VB` and `SPD1200S2G` are in the catalogue but ERDI has not published a
-communication manual for them, so this repository ships no driver for them and
-raises a clear error rather than falling back to a similar model.
+`SPD1200S2G` is in the catalogue but ERDI has not published a communication
+manual for it, so this repository ships no driver for it and raises a clear
+error rather than falling back to a similar model. `LRF10VB` (940 nm, 0.05-9 m)
+is driven from its own Specification V3.0: same 4-byte `5C` millimetre stream as
+the VB series, out-of-range 65535, start/stop ranging only.
 
 ## Install in one command
 
@@ -327,8 +329,10 @@ quotations is in the two protocol documents.
     address.** Only `LRF200H` (`0x33`) and the VB series (`0x52`) do.
 12. **Family-A stop bits and parity are not stated** — only "Data bits: 8". The
     drivers leave the platform default (8N1) in place.
-13. **`LRF10VB` and `SPD1200S2G` have no published protocol at all.** They are
-    listed but not driven.
+13. **`SPD1200S2G` has no published protocol at all.** It is listed but not
+    driven. `LRF10VB`'s manual publishes only start/stop ranging; its printed
+    "Modify Baud Rate" frames are the LRF50VB serial-number frames, so baud
+    changes are not offered for it.
 14. **Not tested against live hardware in this repository.** The codecs are
     verified against the manuals' golden frames and the transport against a fake
     serial port; the ROS 2 package is statically checked but has not been run in

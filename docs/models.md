@@ -41,7 +41,7 @@ Columns:
 | [LRF300H](https://erdilrf.com/models/lrf300h/) | B | 460800 | 4 B / 2 B | cm | 0.05-300.0 m | 905 nm |  |
 | [LRF600H](https://erdilrf.com/models/lrf600h/) | B | 460800 | 4 B / 2 B | cm | 0.05-600.0 m | 905 nm |  |
 | [LRF1500H](https://erdilrf.com/models/lrf1500h/) | B | 460800 | 5 B / 3 B | cm | 0.05-1500.0 m | 905 nm | only 5-byte frame in the catalogue; see protocol-B doc |
-| [LRF10VB](https://erdilrf.com/models/lrf10vb/) | (not published) | - | - | - | - | 940 nm | Upstream has not published a manual for this model (940 nm, 0.05-9 m). |
+| [LRF10VB](https://erdilrf.com/models/lrf10vb/) | B | 460800 | 4 B / 2 B | mm | 0.05-9.0 m | 940 nm | start/stop ranging only; fixed 50 Hz; out of range = 65535 |
 | [SPD1200S2G](https://erdilrf.com/models/spd1200s2g/) | (not published) | - | - | - | - | 905 nm ± 5 nm | Upstream has not published a manual for this model (0.1-1200 m, with gyro). |
 
 ## Where the numbers come from
@@ -54,12 +54,11 @@ Columns:
 | Range | the model's ranging-range row in its source technical table |
 | Wavelength | the model's source technical table |
 
-## Two models with no published protocol
+## One model with no published protocol
 
-`LRF10VB` and `SPD1200S2G` are in the catalogue but ERDI has not published a
-communication manual for them. This repository therefore does **not** ship a
-driver for them, and `get_model()` raises rather than falling back to a
-sibling model. Ask via <https://erdilrf.com/contact/>.
+`SPD1200S2G` is in the catalogue but ERDI has not published a communication
+manual for it. This repository therefore does **not** ship a driver for it, and
+`get_model()` raises rather than falling back to a sibling model. Ask via <https://erdilrf.com/contact/>.
 
 ## Wavelength note
 

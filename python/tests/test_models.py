@@ -20,11 +20,11 @@ def test_catalogue_is_complete_and_honest_about_the_gaps():
 def test_families_are_split_as_published():
     a = {m for m, s in MODELS.items() if s.family == "A"}
     b = {m for m, s in MODELS.items() if s.family == "B"}
-    assert len(a) == 14 and len(b) == 8
+    assert len(a) == 14 and len(b) == 9
 
 
 @pytest.mark.parametrize("model,unit", [
-    ("LRF22VB", "mm"), ("LRF50VB", "mm"),
+    ("LRF22VB", "mm"), ("LRF50VB", "mm"), ("LRF10VB", "mm"),
     ("LRF50H", "cm"), ("LRF100H", "cm"), ("LRF200H", "cm"),
     ("LRF300H", "cm"), ("LRF600H", "cm"), ("LRF1500H", "cm"),
 ])
@@ -101,3 +101,17 @@ def test_family_b_defaults_to_460800():
     for name, spec in MODELS.items():
         if spec.family == "B":
             assert spec.default_baud == 460800, name
+
+
+def test_lrf10vb_decodes_its_manual_example_in_millimetres():
+    """LRF10VB Specification V3.0 6.2: '5C 02 11 EC' is 4354 mm; 65535 is out of range."""
+    from erdi_lrf import protocol_b
+    spec = get_model("LRF10VB")
+    m = protocol_b.parse_data_frame(bytes.fromhex("5C 02 11 EC"), spec)
+    assert m.metres == pytest.approx(4.354)
+    assert not m.out_of_range
+    oor = protocol_b.parse_data_frame(protocol_b.build_data_frame(65535, spec), spec)
+    assert oor.out_of_range
+    assert spec.supports("start_stop") and not spec.supports("set_baud")
+    assert protocol_b.start_ranging() == bytes.fromhex("5A 0A 02 02 00 F1")
+    assert protocol_b.stop_ranging() == bytes.fromhex("5A 0A 02 00 00 F3")

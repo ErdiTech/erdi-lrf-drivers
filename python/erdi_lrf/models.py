@@ -473,13 +473,48 @@ MODELS: dict = {
             "row) -- the manual lists both.",
         ),
     ),
+    "LRF10VB": ModelSpec(
+        model="LRF10VB", family="B", default_baud=460800, frame_len=4,
+        distance_bytes=2, unit="mm", raw_scale=1.0, out_of_range_raw=65535,
+        min_range_m=0.05, max_range_m=9.0,
+        capabilities=frozenset({CAP_START_STOP}),
+        sources={
+            "baud": "UART Baud Rate 460800 (adjustable) Data Bit 8 Stop Bit 1 Parity Bit N/A",
+            "checksum": (
+                "EC: The checksum byte is calculated by summing all bytes from the "
+                "second byte (02) to the second-last byte (11), then inverting the "
+                "result."
+            ),
+            "unit": (
+                "02 11: Distance value 2 bytes means the measuring distance is "
+                "4354mm, little-endian, Range:0-65535, When out of range, its "
+                "output is 65535."
+            ),
+            "start_stop": (
+                "Stop Ranging 5A 0A 02 00 00 F3 -> 5A 8A 02 00 00 73; "
+                "Start Ranging 5A 0A 02 02 00 F1 -> 5A 8A 02 02 00 71"
+            ),
+            "range": "LRF10VB Specification V3.0: 0.05-9 m at 90% reflectivity, 50 Hz output.",
+        },
+        notes=(
+            "Source: LRF10VB Specification V3.0, section 6 'Communication "
+            "Protocol: UART' and 6.3 'UART Commands'.",
+            "Only Start/Stop ranging are driven.  MANUAL DISCREPANCY (reported, "
+            "not resolved): row 1 'Modify Baud Rate' prints the frames "
+            "'5A 0D 02 0D 0D 0D 0D BC' / '5A 8D 02 10 01 00 00 5F', which are the "
+            "LRF50VB 'Reading serial no.' frames, so set_baud is not offered for "
+            "this model.  The manual publishes no read-serial, read-version, "
+            "frequency or IIC commands.",
+            "Fixed output rate: 50 Hz per the specification table; the manual "
+            "gives no command to change it.",
+        ),
+    ),
 }
 
 #: Models in the published catalogue whose communication protocol ERDI has not
 #: released.  Listed so that ``erdi-lrf models`` is honest about the whole
 #: catalogue rather than silently omitting them.
 UNPUBLISHED_PROTOCOL = {
-    "LRF10VB": "Upstream has not published a manual for this model (940 nm, 0.05-9 m).",
     "SPD1200S2G": "Upstream has not published a manual for this model (0.1-1200 m, with gyro).",
 }
 
