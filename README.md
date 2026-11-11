@@ -189,7 +189,8 @@ cd ~/ros2_ws/src && git clone https://github.com/ErdiTech/erdi_lrf_driver.git
 cd ~/ros2_ws && colcon build --packages-select erdi_lrf_driver
 source install/setup.bash
 
-ros2 run erdi_lrf_driver range_node --ros-args \n  -p port:=/dev/ttyUSB0 -p model:=LRF3000A1 -p rate:=10.0 -p frame_id:=lrf_link
+ros2 run erdi_lrf_driver range_node --ros-args \
+  -p port:=/dev/ttyUSB0 -p model:=LRF3000A1 -p rate:=10.0 -p frame_id:=lrf_link
 # or
 ros2 launch erdi_lrf_driver erdi_lrf.launch.py port:=/dev/ttyUSB0 model:=LRF100H
 ```
