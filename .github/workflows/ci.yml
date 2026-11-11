@@ -12,7 +12,6 @@ jobs:
         with: { python-version: "${{ matrix.python }}" }
       - run: pip install -e "python[test]"
       - run: cd python && python -m pytest -q
-      - run: PYTHONPATH=python python -m pytest -q ros2/erdi_lrf_ros2/test
   arduino:
     runs-on: ubuntu-latest
     steps:

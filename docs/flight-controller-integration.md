@@ -37,7 +37,7 @@ outliers in one place. The cost is an extra board and a power budget.
 ### 3. ROS 2 node
 
 For ground robots and benches, the ROS 2 node in this repository publishes a
-`Range` message. See [`ros2/`](../ros2/) and the launch file. A ROS 2 node is not a
+`Range` message. See the [`erdi_lrf_driver`](https://github.com/ErdiTech/erdi_lrf_driver) package and its launch file. A ROS 2 node is not a
 flight-controller driver; do not assume that publishing `Range` makes the module
 appear in PX4 or ArduPilot.
 

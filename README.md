@@ -49,7 +49,7 @@ and read [UART hardware notes](docs/uart-hardware-notes.md) first.
 | Arduino Uno / Mega | [`BasicMeasure`](https://github.com/ErdiTech/ErdiLRF/tree/main/examples/BasicMeasure) | Hardware UART for family B (460800 baud) |
 | ESP32 | [`BasicMeasure`](https://github.com/ErdiTech/ErdiLRF/tree/main/examples/BasicMeasure) with `Serial1` / `Serial2` | Pass the RX/TX pins to `Serial1.begin()` |
 | Raspberry Pi / PC | `erdi-lrf --port /dev/ttyUSB0 --model LRF3000A1 measure` | [Python](#python) |
-| ROS 2 | `ros2 run erdi_lrf_ros2 range_node` | [ROS 2](#ros-2) |
+| ROS 2 | `ros2 run erdi_lrf_driver range_node` | [ROS 2](#ros-2) |
 | Pixhawk / PX4 / ArduPilot | [Flight-controller integration](docs/flight-controller-integration.md) | No native driver is claimed; the recommended first path is a companion computer publishing MAVLink `DISTANCE_SENSOR` |
 
 ## Field notes
@@ -182,18 +182,16 @@ Arduino](https://erdilrf.com/knowledge/read-laser-distance-module-arduino-uart/)
 
 ### ROS 2
 
-```bash
-# the node uses the Python package above
-cd python && pip install -e . && cd ..
+ROS 2 support lives in its own package, [`erdi_lrf_driver`](https://github.com/ErdiTech/erdi_lrf_driver) (REP-144 naming; earlier releases were called `erdi_lrf_ros2`):
 
-cp -r ros2/erdi_lrf_ros2 ~/ros2_ws/src/
-cd ~/ros2_ws && colcon build --packages-select erdi_lrf_ros2
+```bash
+cd ~/ros2_ws/src && git clone https://github.com/ErdiTech/erdi_lrf_driver.git
+cd ~/ros2_ws && colcon build --packages-select erdi_lrf_driver
 source install/setup.bash
 
-ros2 run erdi_lrf_ros2 range_node --ros-args \
-  -p port:=/dev/ttyUSB0 -p model:=LRF3000A1 -p rate:=10.0 -p frame_id:=lrf_link
+ros2 run erdi_lrf_driver range_node --ros-args \n  -p port:=/dev/ttyUSB0 -p model:=LRF3000A1 -p rate:=10.0 -p frame_id:=lrf_link
 # or
-ros2 launch erdi_lrf_ros2 erdi_lrf.launch.py port:=/dev/ttyUSB0 model:=LRF100H
+ros2 launch erdi_lrf_driver erdi_lrf.launch.py port:=/dev/ttyUSB0 model:=LRF100H
 ```
 
 Publishes `sensor_msgs/Range` on `range`. `min_range` and `max_range` come from
