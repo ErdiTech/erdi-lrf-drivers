@@ -356,6 +356,38 @@ documentation for its safety classification and use conditions.
 For samples, datasheets, mechanical drawings or protocol questions, use the
 contact details above and include the exact model and application.
 
+## Supported models
+
+Full table with baud rates, frame layouts, units and ranges:
+**[docs/models.md](docs/models.md)**.
+
+| Family | Models | Frame | Default baud | Raw unit |
+|---|---|---|---|---|
+| **A** — `55 AA` command/response | LR1000E2/E4, LR1200E2/E4, LR1500E2/E4, LR2000E2/E4, LRF1200A1, LRF3000A1, SPD1200N0/N2/N4, SPD1200D03 | 8 bytes | 115200 for the listed models except SPD1200D03; confirm its delivered setting | value × 10 (0.1 m/count), except SPD1200D03: scaling not published |
+| **B** — `5C` free-running stream | LRF50H, LRF100H, LRF200H, LRF300H, LRF600H, LRF1500H | 4 bytes (LRF1500H: 5) | 460800 | **centimetres** |
+| **B** — `5C` free-running stream | LRF22VB, LRF50VB | 4 bytes | 460800 | **millimetres** |
+
+> ⚠️ **The units are not uniform.** The frame `5C 02 11 EC` means **43.54 m** on
+> an H-series module and **4.354 m** on a VB-series module. Always select your
+> model by name; never let a driver infer it from the family.
+
+`SPD1200S2G` is in the catalogue but ERDI has not published a communication
+manual for it, so this repository ships no driver for it and raises a clear
+error rather than falling back to a similar model. `LRF10VB` (940 nm, 0.05-9 m)
+is driven from its own Specification V3.0: same 4-byte `5C` millimetre stream as
+the VB series, out-of-range 65535, start/stop ranging only.
+
+## Support
+
+If these drivers save you time, a tip is appreciated (send the matching coin on the matching network only):
+
+| Network | Address |
+|---|---|
+| USDT (TRC20) | `TNGdTwE6opH6rmUyoG1JUR7FSyEb4k273R` |
+| USDT (ERC20 / BEP20 / Polygon), ETH (Ethereum / Arbitrum / Base) | `0x59c43144a862b351fa1086ae842d1327c9d91613` |
+| BTC | `1RS6tWXHregLfEsiPzVUCUBuhgDg5uTSV` |
+| USDT (Solana) | `HZguEXfTtLChNdJTxAYCbcGscaqikz8JYrEpUhEyeVd9` |
+
 ## License
 
 MIT — see [LICENSE](LICENSE). Copyright (c) 2026 ERDI TECH LTD.
