@@ -4,12 +4,12 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "erdi-lrf"
-version = "0.1.3"
+version = "0.1.4"
 description = "Open-source drivers for ERDI 905 nm laser rangefinder modules (UART, both published protocol families)"
 readme = "README.md"
 requires-python = ">=3.9"
 license = { text = "MIT" }
-authors = [{ name = "ERDI Technology (Chengdu)" }]
+authors = [{ name = "ERDI TECH LTD", email = "tommy@erdimail.com" }]
 keywords = ["laser-rangefinder", "lrf", "905nm", "lidar", "uav", "gimbal", "erdi", "serial"]
 classifiers = [
   "Development Status :: 4 - Beta",

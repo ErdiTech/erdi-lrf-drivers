@@ -390,4 +390,4 @@ If these drivers save you time, a tip is appreciated (send the matching coin on 
 
 ## License
 
-MIT — see [LICENSE](LICENSE). Copyright (c) 2026 ERDI Technology (Chengdu).
+MIT — see [LICENSE](LICENSE). Copyright (c) 2026 ERDI TECH LTD.
