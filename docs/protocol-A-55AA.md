@@ -83,7 +83,7 @@ integration bug; `python/tests/test_protocol_a.py` pins both formulas.
 | `0x00`–`0x07` | Hardware error |
 
 The manual lists `0x00` twice — once as "no echo" and once inside the hardware
-error range. Reproduced as printed.
+error range. Both entries are kept as given in the protocol frame reference.
 
 ## Baud-rate TYPE tables
 
@@ -111,7 +111,7 @@ take effect immediately; it becomes effective only after a reboot."
 
 ## PROTOCOL HOLD — continuous ranging on LRF1200A1 and LRF3000A1
 
-> "The source-stated continuous-ranging request uses function 0x89 while its
+> "The documented continuous-ranging request uses function 0x89 while its
 > recorded reply uses 0x88. This document preserves both and does not authorize
 > continuous operation or a response parser."
 >

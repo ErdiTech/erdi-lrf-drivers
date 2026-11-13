@@ -153,7 +153,7 @@ published formula rather than borrowing a sibling's base.
 | `0x0D` | Factory reset | W | write `0x01` |
 
 Note the I²C distance registers are documented **high byte first**, while the
-UART data frame is little-endian. Both are reproduced as printed.
+UART data frame is little-endian. Both follow the protocol frame reference.
 
 This repository's drivers implement the UART path only; the register map is
 included so an I²C integrator does not have to open the PDF.

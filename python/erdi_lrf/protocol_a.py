@@ -44,7 +44,7 @@ FN_EXT_CIRCUIT_OFF = 0x71  # "55 AA 71 AB CD 00 00 E9"
 IDLE_DATA = b"\xff\xff\xff\xff"
 
 #: ErrCode table, source rows T5/R15..T5/R18 of LRF1200A1 / LRF3000A1.
-#: Reported exactly as printed, including the fact that 0x00 appears twice.
+#: Kept exactly as in the protocol frame reference, including the fact that 0x00 appears twice.
 ERROR_CODES = {
     0x00: "No echo signal was received (also listed inside the 0x00-0x07 hardware-error range)",
     0x16: "Out of range: below the minimum range",
