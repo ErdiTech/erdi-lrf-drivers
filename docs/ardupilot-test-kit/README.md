@@ -13,8 +13,16 @@ than us.
 ## 1. Which firmware and which `RNGFNDx_TYPE`
 
 The firmware below is ArduCopter master (4.8.0-dev) with the ERDI drivers
-added. It is a **test build**: use it on the bench, not on an aircraft you care
-about.
+added. It is a **development test build for the bench only. Do not fly it.**
+
+Before you flash:
+
+- Take the propellers off if the board is in an airframe.
+- Save your current parameters to a file first (Mission Planner: *Config >
+  Full Parameter List > Save to file*). Loading a different firmware can reset
+  them.
+- When you are done, flash your normal stable firmware again and load your
+  saved parameters.
 
 | Your module | Protocol | `RNGFND1_TYPE` | Baud (fixed by the driver) | Firmware |
 |---|---|---|---|---|
