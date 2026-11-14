@@ -122,6 +122,27 @@ def test_read_serial_number_vb_tries_the_other_printed_form_when_silent(model, f
         assert bytes(lrf.ser.written) == first + second
 
 
+def test_read_serial_number_vb_tries_the_other_form_after_only_a_foreign_reply():
+    """A reply to another command (5A 8B ... Set frequency) is not an answer to the first form."""
+    first = bytes.fromhex("5A0D020D0D0D0DBC")
+    second = bytes.fromhex("5A0D040D0D0D0DBA")
+    f = factory({first: bytes.fromhex("5A8B02E70388"), second: bytes.fromhex("5A8D04100100005D")})
+    with ErdiLRF("COM_TEST", model="LRF50VB", timeout=0.05, serial_factory=f) as lrf:
+        assert lrf.read_serial_number() == 272
+        assert bytes(lrf.ser.written) == first + second
+
+
+def test_lrf50vb_two_byte_reply_waits_for_the_longer_form_until_the_timeout():
+    """Documented trade-off: a module that only sends the length-byte form answers after one timeout."""
+    import time
+    request = bytes.fromhex("5A0D020D0D0D0DBC")
+    f = factory({request: bytes.fromhex("5A8D0210015F")})
+    with ErdiLRF("COM_TEST", model="LRF50VB", timeout=0.1, serial_factory=f) as lrf:
+        t0 = time.monotonic()
+        assert lrf.read_serial_number() == 272
+        assert time.monotonic() - t0 >= 0.09
+
+
 def test_read_serial_number_vb_raises_when_neither_form_is_answered():
     from erdi_lrf.errors import NoReplyError
     with ErdiLRF("COM_TEST", model="LRF50VB", timeout=0.05, serial_factory=factory({})) as lrf:
@@ -159,6 +180,31 @@ def test_command_reply_is_cut_by_its_length_byte_not_by_a_lucky_prefix():
     with ErdiLRF("COM_TEST", model="LRF22VB", serial_factory=f) as lrf:
         reply = lrf._command_b(request, pb.CMD_READ_FREQUENCY)
         assert reply.data == bytes.fromhex("6200")
+
+
+def test_command_skips_a_reply_to_another_command_and_returns_its_own():
+    request = pb.read_software_version()
+    f = factory({request: bytes.fromhex("5A8B02E70388") + bytes.fromhex("5A9602030262")})
+    with ErdiLRF("COM_TEST", model="LRF22VB", serial_factory=f) as lrf:
+        assert lrf.read_software_version() == "2.3"
+
+
+def test_data_frame_bytes_that_look_like_a_reply_do_not_abort_the_command():
+    """5C 5A A5 00 is a valid data frame; followed by 5A its tail reads as a 4-byte 5A frame."""
+    request = pb.read_software_version()
+    f = factory({request: bytes.fromhex("5C5AA500") + bytes.fromhex("5A9602030262")})
+    with ErdiLRF("COM_TEST", model="LRF22VB", serial_factory=f) as lrf:
+        assert lrf.read_software_version() == "2.3"
+
+
+def test_command_reports_the_other_reply_when_its_own_never_arrives():
+    from erdi_lrf.errors import FrameError
+    request = pb.read_software_version()
+    f = factory({request: bytes.fromhex("5A8B02E70388")})
+    with ErdiLRF("COM_TEST", model="LRF22VB", timeout=0.05, serial_factory=f) as lrf:
+        with pytest.raises(FrameError) as exc:
+            lrf.read_software_version()
+        assert "0x0B" in str(exc.value)
 
 
 def test_read_serial_number_lrf50h_sends_its_own_printed_frame():

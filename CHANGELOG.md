@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+## 0.1.7 - 2026-11-15
+- `5A` command replies: a well-formed frame that answers a different command no longer aborts the call. The bytes of a `5C` data frame can form such a frame by coincidence (`5C 5A A5 00` followed by `5A`); the reader now keeps listening for its own reply and raises `FrameError` for the other frame only if nothing else arrives before the timeout.
+- `LRF50VB` / `LRF22VB` serial number: if only a reply to some other command arrives for the first printed request form, the other form is now tried as well (it used to be tried only when the module stayed completely silent).
+- The longer-form wait is documented and tested: a module that only sends the two-byte serial reply answers after one full timeout.
+
 ## 0.1.6 - 2026-11-15
 - Fix: `5A` command replies are now cut by their length byte. The reader used to accept the first prefix whose checksum verified, so an `LRF50VB` serial-number reply such as `5A 8D 02 10 01 5F 00 00` (serial 6226192) came back as 272, and a reply whose first data byte happened to match a shorter checksum could fail. For the `LRF50VB` / `LRF22VB` serial number the four-data-byte reply printed in the manuals is preferred; the two-byte form is accepted if that is all the module sends. Stale input is discarded before each command is sent.
 
