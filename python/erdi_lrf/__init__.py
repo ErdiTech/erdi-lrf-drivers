@@ -27,7 +27,7 @@ from .errors import (
 )
 from .models import MODELS, UNPUBLISHED_PROTOCOL, ModelSpec, get_model
 
-__version__ = "0.1.4"
+__version__ = "0.1.5"
 
 __all__ = [
     "ErdiLRF",

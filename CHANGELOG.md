@@ -1,6 +1,8 @@
 # Changelog
 
 ## Unreleased
+
+## 0.1.5 - 2026-11-15
 - Fix: `LRF50VB` read-serial frame. Its manual prints `5A 0D 02 0D 0D 0D 0D BC`, which does satisfy `Check_Sum`; earlier notes calling it a checksum mismatch were wrong. The driver now sends that exact frame to `LRF50VB` (and `5A 0D 04 ... BA` to `LRF22VB`), and the reply parser accepts the printed `5A 8D 02 10 01 00 00 5F` with all four data bytes. If a VB module does not answer its own printed frame, `read_serial_number()` tries the other printed form once.
 - `tools/erdi_capture.py`: cross-platform raw UART recorder (pyserial). Receive-only unless `--start e2|vb` is given; writes `.bin`, hex `.txt` and a `.json` summary, with a live frame count and median every 5 s. Self-tests in `tools/test_erdi_capture.py` run in CI.
 - `docs/ardupilot-test-kit/`: bench test instructions, wiring tables and Mission Planner parameter files for ArduPilot test builds with the ERDI drivers (`RNGFNDx_TYPE` 49 VB, 50 H, 51 E2). Type 51 exists only on a test branch, not upstream.
