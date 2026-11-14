@@ -26,10 +26,17 @@ Type values 49, 50 and 51 are the values used by these branches. They are not
 in an official ArduPilot release yet and may change during review.
 
 Download the `.apj` for your board from the
-[Releases page](https://github.com/ErdiTech/erdi-lrf-drivers/releases)
-(look for the release named *ArduPilot test firmware*). Each file name says
-the board and vehicle, e.g. `arducopter-CubeOrangePlus-erdi-e2.apj`. If your
-board is not listed, open an issue with the board name and we will build one.
+[ArduPilot test firmware release](https://github.com/ErdiTech/erdi-lrf-drivers/releases/tag/ardupilot-test-fw-20261115):
+
+| File | Board | Vehicle |
+|---|---|---|
+| `arducopter-CubeOrangePlus-erdi-e2.apj` | Cube Orange+ | Copter |
+| `ardurover-CubeOrangePlus-erdi-e2.apj` | Cube Orange+ | Rover |
+| `arducopter-MatekH743-erdi-e2.apj` | Matek H743 (Wing/Slim/Mini) | Copter |
+
+All three contain types 49, 50 and 51 and report `V4.8.0-dev (05ca63d6)`.
+`SHA256SUMS.txt` in the same release lists the checksums. If your board is
+not listed, open an issue with the board name and we will build one.
 
 ## 2. Wiring
 
@@ -89,7 +96,7 @@ the `.apj`, and let it reboot. Do not let it auto-select a stock firmware.
 *Advanced settings*, choose *ArduPilot* and *Custom firmware file...*, then
 pick the `.apj`.
 
-After the reboot the Messages tab should show `ArduCopter V4.8.0-dev` and
+After the reboot the Messages tab should show `ArduCopter V4.8.0-dev` (or `ArduRover`) and
 a git hash. Please note that line down; it goes in the report.
 
 If the board already has your own setup on it, save your parameters first
