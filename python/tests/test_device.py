@@ -109,6 +109,27 @@ def test_read_serial_number_lrf50vb_sends_its_own_printed_frame():
         assert bytes(lrf.ser.written) == request
 
 
+@pytest.mark.parametrize("model, first, second", [
+    ("LRF50VB", "5A0D020D0D0D0DBC", "5A0D040D0D0D0DBA"),
+    ("LRF22VB", "5A0D040D0D0D0DBA", "5A0D020D0D0D0DBC"),
+])
+def test_read_serial_number_vb_tries_the_other_printed_form_when_silent(model, first, second):
+    """The two VB manuals print different length bytes; a silent module gets the other form once."""
+    first, second = bytes.fromhex(first), bytes.fromhex(second)
+    f = factory({second: bytes.fromhex("5A8D04100100005D")})
+    with ErdiLRF("COM_TEST", model=model, timeout=0.05, serial_factory=f) as lrf:
+        assert lrf.read_serial_number() == 272
+        assert bytes(lrf.ser.written) == first + second
+
+
+def test_read_serial_number_vb_raises_when_neither_form_is_answered():
+    from erdi_lrf.errors import NoReplyError
+    with ErdiLRF("COM_TEST", model="LRF50VB", timeout=0.05, serial_factory=factory({})) as lrf:
+        with pytest.raises(NoReplyError):
+            lrf.read_serial_number()
+        assert bytes(lrf.ser.written) == bytes.fromhex("5A0D020D0D0D0DBC5A0D040D0D0D0DBA")
+
+
 def test_read_serial_number_lrf50h_sends_its_own_printed_frame():
     request = bytes.fromhex("5A0D020D0DD6")
     f = factory({request: bytes.fromhex("5A8D02100100005F")})

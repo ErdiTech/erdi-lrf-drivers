@@ -297,7 +297,8 @@ quotations is in the two protocol documents.
 7. **`LRF50VB` and `LRF22VB` print different length bytes for the same
    serial-number request.** LRF50VB prints `5A 0D 02 0D 0D 0D 0D BC` and
    LRF22VB prints `5A 0D 04 0D 0D 0D 0D BA`; both satisfy the published
-   `Check_Sum`. The drivers send each model the frame its own manual prints.
+   `Check_Sum`. The drivers send each model the frame its own manual prints;
+   if the module does not answer, the Python driver tries the other form once.
 8. **`SPD1200N0/N2/N4` do not print a transmit checksum formula**, only the note
    that request and reply scopes differ. The drivers use the family-A transmit
    formula, which reproduces every example frame those manuals do print.
