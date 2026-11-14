@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+## 0.1.6 - 2026-11-15
+- Fix: `5A` command replies are now cut by their length byte. The reader used to accept the first prefix whose checksum verified, so an `LRF50VB` serial-number reply such as `5A 8D 02 10 01 5F 00 00` (serial 6226192) came back as 272, and a reply whose first data byte happened to match a shorter checksum could fail. For the `LRF50VB` / `LRF22VB` serial number the four-data-byte reply printed in the manuals is preferred; the two-byte form is accepted if that is all the module sends. Stale input is discarded before each command is sent.
+
 ## 0.1.5 - 2026-11-15
 - Fix: `LRF50VB` read-serial frame. Its manual prints `5A 0D 02 0D 0D 0D 0D BC`, which does satisfy `Check_Sum`; earlier notes calling it a checksum mismatch were wrong. The driver now sends that exact frame to `LRF50VB` (and `5A 0D 04 ... BA` to `LRF22VB`), and the reply parser accepts the printed `5A 8D 02 10 01 00 00 5F` with all four data bytes. If a VB module does not answer its own printed frame, `read_serial_number()` tries the other printed form once.
 - `tools/erdi_capture.py`: cross-platform raw UART recorder (pyserial). Receive-only unless `--start e2|vb` is given; writes `.bin`, hex `.txt` and a `.json` summary, with a live frame count and median every 5 s. Self-tests in `tools/test_erdi_capture.py` run in CI.

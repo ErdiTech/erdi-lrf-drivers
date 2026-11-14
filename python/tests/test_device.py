@@ -130,9 +130,41 @@ def test_read_serial_number_vb_raises_when_neither_form_is_answered():
         assert bytes(lrf.ser.written) == bytes.fromhex("5A0D020D0D0D0DBC5A0D040D0D0D0DBA")
 
 
+def test_lrf50vb_serial_is_read_in_full_when_a_shorter_prefix_also_verifies():
+    """5A 8D 02 10 01 5F 00 00: the first six bytes verify too, but the serial is 0x005F0110."""
+    request = bytes.fromhex("5A0D020D0D0D0DBC")
+    f = factory({request: bytes.fromhex("5A8D0210015F0000")})
+    with ErdiLRF("COM_TEST", model="LRF50VB", serial_factory=f) as lrf:
+        assert lrf.read_serial_number() == 0x005F0110
+
+
+def test_lrf50vb_serial_accepts_a_two_byte_reply_if_that_is_all_that_arrives():
+    request = bytes.fromhex("5A0D020D0D0D0DBC")
+    f = factory({request: bytes.fromhex("5A8D0210015F")})
+    with ErdiLRF("COM_TEST", model="LRF50VB", timeout=0.05, serial_factory=f) as lrf:
+        assert lrf.read_serial_number() == 272
+
+
+def test_command_ignores_a_stale_reply_left_in_the_input_buffer():
+    stale = bytes.fromhex("5A8D04100100005D")
+    f = factory({pb.read_software_version(): bytes.fromhex("5A9602030262")}, stream=stale)
+    with ErdiLRF("COM_TEST", model="LRF22VB", serial_factory=f) as lrf:
+        assert lrf.read_software_version() == "2.3"
+
+
+def test_command_reply_is_cut_by_its_length_byte_not_by_a_lucky_prefix():
+    """Reply 5A 9B 02 62 00 00: the four-byte prefix 5A 9B 02 62 verifies by coincidence."""
+    request = pb.read_frequency()
+    f = factory({request: bytes.fromhex("5A9B02620000")})
+    with ErdiLRF("COM_TEST", model="LRF22VB", serial_factory=f) as lrf:
+        reply = lrf._command_b(request, pb.CMD_READ_FREQUENCY)
+        assert reply.data == bytes.fromhex("6200")
+
+
 def test_read_serial_number_lrf50h_sends_its_own_printed_frame():
+    """LRF50H manual: request 5A 0D 02 0D 0D D6, reply 5A 8D 02 10 01 5F."""
     request = bytes.fromhex("5A0D020D0DD6")
-    f = factory({request: bytes.fromhex("5A8D02100100005F")})
+    f = factory({request: bytes.fromhex("5A8D0210015F")})
     with ErdiLRF("COM_TEST", model="LRF50H", serial_factory=f) as lrf:
         assert lrf.read_serial_number() == 272
         assert bytes(lrf.ser.written) == request
