@@ -12,6 +12,7 @@ jobs:
         with: { python-version: "${{ matrix.python }}" }
       - run: pip install -e "python[test]"
       - run: cd python && python -m pytest -q
+      - run: python -m pytest -q tools
   arduino:
     runs-on: ubuntu-latest
     steps:
