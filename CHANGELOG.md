@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+- `tools/erdi_capture.py`: cross-platform raw UART recorder (pyserial). Receive-only unless `--start e2|vb` is given; writes `.bin`, hex `.txt` and a `.json` summary, with a live frame count and median every 5 s. Self-tests in `tools/test_erdi_capture.py` run in CI.
+- `docs/ardupilot-test-kit/`: bench test instructions, wiring tables and Mission Planner parameter files for ArduPilot test builds with the ERDI drivers (`RNGFNDx_TYPE` 49 VB, 50 H, 51 E2). Type 51 exists only on a test branch, not upstream.
+
 ## 0.1.4 - 2026-11-12
 - Package, Arduino library and citation metadata now name the publisher as ERDI TECH LTD (matches LICENSE), including the Arduino library LICENSE and source headers.
 - Per-model range data re-checked against the erdilrf.com catalog (2026-11-12): all 22 catalogue models match the standard catalog range (SPD1200N0/N2/N4 = 0.2-1,200 m; the 1,500 m night-time figure is not used as a limit). No code or protocol changes.

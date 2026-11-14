@@ -61,6 +61,8 @@ Engineering notes for choosing, wiring and validating a module:
 - [Flight-controller integration](docs/flight-controller-integration.md) - PX4 / ArduPilot / ROS 2 patterns
 - [UART hardware notes](docs/uart-hardware-notes.md) - levels, grounds, cable, power
 - [Field troubleshooting](docs/field-troubleshooting.md) - symptom to cause table
+- [ArduPilot test kit](docs/ardupilot-test-kit/README.md) - test firmware, wiring and what log to send back
+- [Raw capture tool](tools/README.md) - record a module's serial bytes on any OS
 
 ## Install in one command
 
