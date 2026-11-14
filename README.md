@@ -294,9 +294,10 @@ quotations is in the two protocol documents.
 6. **`LRF1500H`'s out-of-range value is stated twice, inconsistently** —
    16777215 in section 5.2 and "0xFFFF (16777215)" in section 6, where `0xFFFF`
    is 65535. The drivers use 16777215, matching the stated 3-byte field width.
-7. **`LRF50VB`'s printed serial-read request checksum does not verify** for
-   either length byte. The drivers build the request with the published
-   `Check_Sum` function.
+7. **`LRF50VB` and `LRF22VB` print different length bytes for the same
+   serial-number request.** LRF50VB prints `5A 0D 02 0D 0D 0D 0D BC` and
+   LRF22VB prints `5A 0D 04 0D 0D 0D 0D BA`; both satisfy the published
+   `Check_Sum`. The drivers send each model the frame its own manual prints.
 8. **`SPD1200N0/N2/N4` do not print a transmit checksum formula**, only the note
    that request and reply scopes differ. The drivers use the family-A transmit
    formula, which reproduces every example frame those manuals do print.
@@ -310,9 +311,10 @@ quotations is in the two protocol documents.
 12. **Family-A stop bits and parity are not stated** — only "Data bits: 8". The
     drivers leave the platform default (8N1) in place.
 13. **`SPD1200S2G` has no published protocol at all.** It is listed but not
-    driven. `LRF10VB`'s manual publishes only start/stop ranging; its printed
-    "Modify Baud Rate" frames are the LRF50VB serial-number frames, so baud
-    changes are not offered for it.
+    driven. `LRF10VB`'s manual publishes only start/stop ranging; its first command
+    is labelled "Modify Baud Rate" but the frames printed are the same bytes the
+    LRF22VB/LRF50VB manuals print for reading the serial number, so baud changes
+    are not offered for it.
 14. **Not tested against live hardware in this repository.** The codecs are
     verified against the manuals' golden frames and the transport against a fake
     serial port; the ROS 2 package is statically checked but has not been run in

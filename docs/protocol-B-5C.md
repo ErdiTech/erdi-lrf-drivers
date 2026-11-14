@@ -97,6 +97,7 @@ The checksum covers `cmd`, `len` and `data` — the same `Check_Sum` function.
 |---|---|---|---|---|
 | 1 | Read serial no. | `5A 0D 02 0D 0D D6` | `5A 8D 02 10 01 00 00 5F` | LRF50H / LRF1500H |
 | 1b | Read serial no. (VB 4-byte form) | `5A 0D 04 0D 0D 0D 0D BA` | `5A 8D 04 10 01 00 00 5D` | LRF22VB. "10 01 00 00 means the serial no. is 272: little-endian" |
+| 1c | Read serial no. (VB 4-byte form) | `5A 0D 02 0D 0D 0D 0D BC` | `5A 8D 02 10 01 00 00 5F` | LRF50VB. Four data bytes, length byte printed as `02` in both frames |
 | 2 | Read software version | `5A 16 02 16 16 BB` | `5A 96 02 03 02 62` | "03 02 means the software version no. is V2.3 … Add a point (.) in the middle." |
 | 3 | Set baud rate | `5A 06 02 80 04 73` | `5A 86 02 80 04 F3` | "80 04 as a decimal is 1152: little-endian, it means the baud rate is set to 115200=1152*100" |
 | 4 | Set frequency | `5A 0B 02 E7 03 08` | `5A 8B 02 E7 03 88` | "E7 03 (little-endian) represents the frequency divisor: 999." |
@@ -164,7 +165,8 @@ included so an I²C integrator does not have to open the PDF.
 |---|---|
 | `LRF1500H` example frame vs its own checksum | The manual prints `5C 02 11 03 EC`, but its own `Check_Sum` gives `~(0x02+0x11+0x03) = 0xE9`. `0xEC` is the correct byte for the *four*-byte frame `5C 02 11 EC` used by the other models, so the example looks copied. The drivers implement the printed function; a test asserts the discrepancy so it cannot be silently "corrected". |
 | `LRF1500H` out-of-range value | Section 5.2 says the field is 3 bytes and out-of-range outputs 16777215; section 6 says "it would output 0xFFFF (16777215)", and `0xFFFF` is 65535. The drivers use 16777215, matching the stated field width. Reported, not resolved. |
-| `LRF50VB` serial-read example checksum | The printed request `5A 0D 02 0D 0D 0D 0D BC` does not satisfy `Check_Sum` for either length byte (`0x02` → `0xBE`, `0x04` → `0xBA`); its printed reply does verify. The drivers build the request with `Check_Sum`. |
+| `LRF50VB` / `LRF22VB` serial-read frames | Not a checksum problem: both frames satisfy `Check_Sum`. The LRF50VB manual prints `5A 0D 02 0D 0D 0D 0D BC` (`0D+02+0D+0D+0D+0D = 0x43`, inverted `0xBC`) and the LRF22VB manual prints `5A 0D 04 0D 0D 0D 0D BA`. Only the length byte differs (`02` vs `04`). The drivers send each model the frame its own manual prints, and accept the printed reply (length byte `02` with four data bytes for LRF50VB). |
+| `LRF10VB` command 1 name | The manual labels its first command "Modify Baud Rate", but the frames printed are `5A 0D 02 0D 0D 0D 0D BC` / `5A 8D 02 10 01 00 00 5F`, the same bytes the LRF22VB/LRF50VB manuals print for reading the serial number. No `5A 06 ...` baud frame is printed, so baud changes are not offered for this model. |
 | `LRF300H`, `LRF600H`, `LRF1500H` frequency | No divisor formula published; set/read frequency is not exposed for these models. |
 | `LRF50H`, `LRF100H`, `LRF300H`, `LRF600H`, `LRF1500H` I²C address | Not stated in their manuals (`LRF200H` states `0x33`, the VB series `0x52`). Nothing is extrapolated. |
 | Start/stop ranging | Documented only for `LRF50H`, `LRF22VB` and `LRF50VB`. The other five free-run from power-up and the drivers do not send a start command to them. |

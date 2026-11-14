@@ -100,6 +100,23 @@ def test_read_serial_number_over_the_wire():
         assert lrf.read_serial_number() == 272
 
 
+def test_read_serial_number_lrf50vb_sends_its_own_printed_frame():
+    """LRF50VB manual p.5: request 5A 0D 02 0D 0D 0D 0D BC, reply 5A 8D 02 10 01 00 00 5F."""
+    request = bytes.fromhex("5A0D020D0D0D0DBC")
+    f = factory({request: bytes.fromhex("5A8D02100100005F")})
+    with ErdiLRF("COM_TEST", model="LRF50VB", serial_factory=f) as lrf:
+        assert lrf.read_serial_number() == 272
+        assert bytes(lrf.ser.written) == request
+
+
+def test_read_serial_number_lrf50h_sends_its_own_printed_frame():
+    request = bytes.fromhex("5A0D020D0DD6")
+    f = factory({request: bytes.fromhex("5A8D02100100005F")})
+    with ErdiLRF("COM_TEST", model="LRF50H", serial_factory=f) as lrf:
+        assert lrf.read_serial_number() == 272
+        assert bytes(lrf.ser.written) == request
+
+
 def test_read_software_version_over_the_wire():
     f = factory({pb.read_software_version(): bytes.fromhex("5A960203026 2".replace(" ", ""))})
     with ErdiLRF("COM_TEST", model="LRF22VB", serial_factory=f) as lrf:

@@ -462,12 +462,13 @@ MODELS: dict = {
             "Our engineering notes list out_of_range as unresolved for "
             "this model; the manual prose does state 'When out of range, output "
             "would be 50000', which is what this driver uses.",
-            "MANUAL DISCREPANCY (reported, not resolved): the printed 'Reading "
-            "serial no.' request '5A 0D 02 0D 0D 0D 0D BC' does not satisfy the "
-            "manual's own Check_Sum function for either length byte "
-            "(0x02 -> 0xBE, 0x04 -> 0xBA).  The printed reply "
-            "'5A 8D 02 10 01 00 00 5F' does check out.  This driver builds the "
-            "request with the Check_Sum function.",
+            "The printed 'Reading serial no.' request is "
+            "'5A 0D 02 0D 0D 0D 0D BC' (length byte 02, four 0D data bytes; the "
+            "LRF22VB manual prints 04 and BA for the same four bytes).  Both "
+            "satisfy the manual's own Check_Sum function.  The printed reply "
+            "'5A 8D 02 10 01 00 00 5F' also checks out; its length byte is 02 "
+            "although it carries four data bytes, and the driver reads all four.  "
+            "This driver sends the frame exactly as the LRF50VB manual prints it.",
             "Supported output frequencies per the manual: 100/50/20/10/1 Hz (the "
             "set-frequency row) and 200/100/50/20/10/1 Hz (the read-frequency "
             "row) -- the manual lists both.",
@@ -499,11 +500,12 @@ MODELS: dict = {
         notes=(
             "Source: LRF10VB Specification V3.0, section 6 'Communication "
             "Protocol: UART' and 6.3 'UART Commands'.",
-            "Only Start/Stop ranging are driven.  MANUAL DISCREPANCY (reported, "
-            "not resolved): row 1 'Modify Baud Rate' prints the frames "
-            "'5A 0D 02 0D 0D 0D 0D BC' / '5A 8D 02 10 01 00 00 5F', which are the "
-            "LRF50VB 'Reading serial no.' frames, so set_baud is not offered for "
-            "this model.  The manual publishes no read-serial, read-version, "
+            "Only Start/Stop ranging are driven.  Row 1 of the manual's command "
+            "table is labelled 'Modify Baud Rate' but prints the frames "
+            "'5A 0D 02 0D 0D 0D 0D BC' / '5A 8D 02 10 01 00 00 5F', the same "
+            "bytes as the read-serial frames in the LRF22VB/LRF50VB manuals "
+            "(no '5A 06 ...' baud frame is printed), so set_baud is not offered "
+            "for this model.  The manual publishes no read-serial, read-version, "
             "frequency or IIC commands.",
             "Fixed output rate: 50 Hz per the specification table; the manual "
             "gives no command to change it.",

@@ -26,6 +26,7 @@ MANUAL_FRAMES = [
     ("5C 02 11 EC", "LRF100H/LRF22VB/LRF50VB data frame, 4354 cm resp. 4354 mm"),
     ("5A 0D 02 0D 0D D6", "LRF50H: Reading serial no. request"),
     ("5A 0D 04 0D 0D 0D 0D BA", "LRF22VB: Reading serial no. request (4-byte form)"),
+    ("5A 0D 02 0D 0D 0D 0D BC", "LRF50VB: Reading serial no. request"),
     ("5A 8D 04 10 01 00 00 5D", "LRF22VB: Reading serial no. reply, serial 272"),
     ("5A 8D 02 10 01 00 00 5F", "LRF50VB: Reading serial no. reply, serial 272"),
     ("5A 16 02 16 16 BB", "LRF22VB/LRF50VB: Reading software version request"),
@@ -63,6 +64,7 @@ def test_check_sum_is_the_inverted_sum():
 GOLDEN_COMMANDS = [
     (pb.read_serial_number(), "5A 0D 02 0D 0D D6", "LRF50H command 1"),
     (pb.read_serial_number_4(), "5A 0D 04 0D 0D 0D 0D BA", "LRF22VB command 1"),
+    (pb.read_serial_number_lrf50vb(), "5A 0D 02 0D 0D 0D 0D BC", "LRF50VB command 1"),
     (pb.read_software_version(), "5A 16 02 16 16 BB", "LRF22VB command 2"),
     (pb.set_baud(115200), "5A 06 02 80 04 73", "LRF22VB command 3"),
     (pb.set_frequency_divisor(999), "5A 0B 02 E7 03 08", "LRF22VB command 4"),
@@ -181,6 +183,13 @@ def test_lrf1500h_frame_length_is_enforced_per_model():
 def test_parse_serial_number_reply():
     """'10 01 00 00 means the serial no. is 272: little-endian' -- LRF22VB."""
     reply = pb.parse_command_reply(h("5A 8D 04 10 01 00 00 5D"), pb.CMD_READ_SERIAL)
+    assert int.from_bytes(reply.data, "little") == 272
+
+
+def test_parse_serial_number_reply_lrf50vb_keeps_all_four_data_bytes():
+    """LRF50VB prints length byte 02 but carries four data bytes."""
+    reply = pb.parse_command_reply(h("5A 8D 02 10 01 00 00 5F"), pb.CMD_READ_SERIAL)
+    assert reply.data == h("10 01 00 00")
     assert int.from_bytes(reply.data, "little") == 272
 
 

@@ -286,8 +286,13 @@ class ErdiLRF:
     def read_serial_number(self) -> int:
         """Family B: read the module serial number (little-endian)."""
         self._require(CAP_READ_SERIAL, "serial-number read")
-        four_byte = self.spec.model in ("LRF22VB", "LRF50VB")
-        request = pb.read_serial_number_4() if four_byte else pb.read_serial_number()
+        # Each model sends the frame its own manual prints.
+        if self.spec.model == "LRF22VB":
+            request = pb.read_serial_number_4()
+        elif self.spec.model == "LRF50VB":
+            request = pb.read_serial_number_lrf50vb()
+        else:
+            request = pb.read_serial_number()
         reply = self._command_b(request, pb.CMD_READ_SERIAL)
         return int.from_bytes(reply.data, "little")
 

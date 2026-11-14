@@ -104,8 +104,12 @@ def parse_command_reply(frame: bytes, expected_command: Optional[int] = None) ->
         )
     cmd = frame[1] & ~REPLY_BIT
     length = frame[2]
-    data = frame[3:3 + length]
-    if len(data) != length:
+    # Take everything between the length byte and the checksum.  The LRF50VB
+    # manual prints a serial-number reply whose length byte is 02 but which
+    # carries four data bytes (5A 8D 02 10 01 00 00 5F), so the length byte is a
+    # lower bound, not an exact count.
+    data = frame[3:-1]
+    if len(data) < length:
         raise FrameError(
             f"reply declares {length} data bytes but carries {len(data)}: {frame.hex(' ')}"
         )
@@ -179,8 +183,9 @@ def iter_data_frames(buffer: bytes, spec) -> Iterator[Tuple[int, bytes]]:
 def read_serial_number() -> bytes:
     """``5A 0D 02 0D 0D D6``.
 
-    Note the VB manuals print a 4-data-byte variant (``5A 0D 04 0D 0D 0D 0D BA``)
-    returning a 4-byte serial number; use :func:`read_serial_number_4` there.
+    The VB manuals print 4-data-byte variants returning a 4-byte serial number:
+    ``5A 0D 04 0D 0D 0D 0D BA`` (LRF22VB, :func:`read_serial_number_4`) and
+    ``5A 0D 02 0D 0D 0D 0D BC`` (LRF50VB, :func:`read_serial_number_lrf50vb`).
     """
     return build_command(CMD_READ_SERIAL, b"\x0d\x0d")
 
@@ -188,6 +193,17 @@ def read_serial_number() -> bytes:
 def read_serial_number_4() -> bytes:
     """``5A 0D 04 0D 0D 0D 0D BA`` -- the LRF22VB four-byte form."""
     return build_command(CMD_READ_SERIAL, b"\x0d\x0d\x0d\x0d")
+
+
+def read_serial_number_lrf50vb() -> bytes:
+    """``5A 0D 02 0D 0D 0D 0D BC`` -- the frame printed in the LRF50VB manual.
+
+    Four ``0D`` data bytes, but the length byte is ``02`` (the LRF22VB manual
+    prints ``04`` for the same four bytes).  Both frames satisfy ``Check_Sum``;
+    each model gets the frame its own manual prints.
+    """
+    body = bytes([CMD_READ_SERIAL, 0x02]) + b"\x0d\x0d\x0d\x0d"
+    return bytes([CMD_HEADER]) + body + bytes([check_sum(body)])
 
 
 def read_software_version() -> bytes:
