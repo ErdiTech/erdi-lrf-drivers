@@ -42,7 +42,7 @@ Columns:
 | [LRF600H](https://erdilrf.com/models/lrf600h/) | B | 460800 | 4 B / 2 B | cm | 0.05-600.0 m | 905 nm |  |
 | [LRF1500H](https://erdilrf.com/models/lrf1500h/) | B | 460800 | 5 B / 3 B | cm | 0.05-1500.0 m | 905 nm | only 5-byte frame in the catalogue; see protocol-B doc |
 | [LRF10VB](https://erdilrf.com/models/lrf10vb/) | B | 460800 | 4 B / 2 B | mm | 0.05-9.0 m | 940 nm | start/stop ranging only; fixed 50 Hz; out of range = 65535 |
-| [SPD1200S2G](https://erdilrf.com/models/spd1200s2g/) | (not published) | - | - | - | - | 905 nm ± 5 nm | Upstream has not published a manual for this model (0.1-1200 m, with gyro). |
+| [SPD1200S2G](https://erdilrf.com/models/spd1200s2g/) | A | 115200 | 8 B / 2 B | m (x10) | 0.1-1200.0 m | 905 nm ± 5 nm | 8-byte distance protocol only; 12-byte angle packets not driven (manual asks to confirm scale first); own baud Type table; checksum overflow unconfirmed |
 
 ## Where the numbers come from
 
@@ -54,11 +54,16 @@ Columns:
 | Range | the model's ranging-range row in its source technical table |
 | Wavelength | the model's source technical table |
 
-## One model with no published protocol
+## SPD1200S2G: partial protocol
 
-`SPD1200S2G` is in the catalogue but ERDI has not published a communication
-manual for it. This repository therefore does **not** ship a driver for it, and
-`get_model()` raises rather than falling back to a sibling model. Ask via <https://erdilrf.com/contact/>.
+`SPD1200S2G` has a communication section in its factory-pack manual (gyro model, 0.1-1200 m).
+This repository drives only what that section defines unambiguously: the `55 AA` single,
+continuous and stop commands, the x10 distance reply and the baud request (its own 8-entry Type
+table). The 12-byte angle and point-to-point packets are not driven, because the manual tells
+the integrator to confirm their field scale and signed encoding first; the checksum overflow
+convention is likewise listed as unconfirmed, so the lower eight bits are assumed as in the other
+family-A manuals. Ask via <https://erdilrf.com/contact/> which designation (`SPD1200S2G` or
+`SPD1200ZG`) your delivered part carries.
 
 ## Wavelength note
 

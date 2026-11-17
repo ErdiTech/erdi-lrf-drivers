@@ -79,6 +79,21 @@ A_BAUD_TYPES_SPD1200D03: Mapping[int, int] = {
     0x07: 230400,
 }
 
+#: SPD1200S2G publishes a third table, again different from the other two.
+#: Source (D:/erdi-kb protocols/_source/SPD1200S2G.txt, "6.1 Baud Rate Configuration"):
+#: "Type 01 9600 bps / 02 14400 / 03 19200 / 04 38400 / 05 56000 / 06 115200 bps
+#: (default) / 07 128000 / 08 230400 bps"
+A_BAUD_TYPES_SPD1200S2G: Mapping[int, int] = {
+    0x01: 9600,
+    0x02: 14400,
+    0x03: 19200,
+    0x04: 38400,
+    0x05: 56000,
+    0x06: 115200,
+    0x07: 128000,
+    0x08: 230400,
+}
+
 #: Family B baud rates, encoded as ``bps // 100`` little-endian uint16.
 #: Source (LRF22VB.txt UART command 3): "60 00 (9600) / C0 00 (19200) /
 #: 80 01 (38400) / 80 04 (115200) / 00 09 (230400) / 00 0A (256000) /
@@ -356,6 +371,51 @@ MODELS: dict = {
         ),
     ),
 
+    # ---- Family A, SPD1200S2G (8-byte distance protocol only) --------------
+    "SPD1200S2G": ModelSpec(
+        model="SPD1200S2G", family="A", default_baud=115200, frame_len=8,
+        distance_bytes=2, unit="m", raw_scale=10.0, out_of_range_raw=None,
+        min_range_m=0.1, max_range_m=1200.0,
+        capabilities=frozenset({CAP_SINGLE, CAP_CONTINUOUS, CAP_STOP, CAP_SET_BAUD}),
+        baud_types=A_BAUD_TYPES_SPD1200S2G,
+        sources={
+            "baud": "The interface uses UART-TTL at 115200 bps by default.",
+            "tx_checksum": "Command: 55 AA 88/89/8E FF FF FF FF SUM[3:7]; SUM[3:7] is the sum of bytes 3 through 7.",
+            "rx_checksum": "Response: 55 AA 88/89 STA FF DATA_H DATA_L SUM[1:7]; SUM[1:7] is the sum of bytes 1 through 7.",
+            "status": "STA =0x00:configuration failed ; STA =0x01 :configuration successful, with data reported.",
+            "unit": (
+                "Data is returned in hexadecimal format. Each reported result is the "
+                "actual measured value multiplied by 10. (Reported quantity: distance.)"
+            ),
+            "baud_request": "Command 55 AA 01 FF FF FF Type SUM[3:7]; Response 55 AA 01 STA FF FF Type SUM[1:7].",
+        },
+        notes=(
+            "Source: SPD1200S2G user manual section 6 'Communication Protocol' "
+            "(transcribed in the ERDI knowledge base, re-read from the page images "
+            "2026-11-15).  Only the 8-byte distance protocol is driven: single "
+            "(0x88), continuous (0x89), stop (0x8E) and the baud request "
+            "(55 AA 01 FF FF FF Type SUM, 8 entries).",
+            "NOT DRIVEN, by the manual's own warning: the 12-byte angle / "
+            "point-to-point packets (0x97 / 0x96: zeroing, read angles, "
+            "point-to-point).  The manual says to 'confirm the field scale and "
+            "signed-number encoding for the 12-byte responses' before implementing "
+            "them, and uses 'the protocol supplied for the optional combined "
+            "distance and angle output configuration'.",
+            "CHECKSUM OVERFLOW UNCONFIRMED: the manual says to confirm 'the checksum "
+            "overflow convention for both packet formats' and prints no worked SUM "
+            "for 0x88/0x89/0x8E.  This driver keeps the lower eight bits, as every "
+            "other ERDI family-A manual states.  If a delivered unit ignores the "
+            "commands, confirm the convention with ERDI.",
+            "DESIGNATION CONFLICT in the factory pack: a second manual in the same "
+            "folder is headed 'SPD1200ZG' on every page, and the datasheet "
+            "dimensions disagree with the catalogue table.  Confirm with ERDI which "
+            "designation the delivered part carries; this entry follows the "
+            "SPD1200S2G-titled manual.",
+            "Unlike the LR / SPD1200N series, the manual prints no self-test row, "
+            "angle row (0x8A) or LD constant-ON row for this model.",
+        ),
+    ),
+
     # ---- Family B, H series (centimetres) ---------------------------------
     "LRF50H": _h("LRF50H", 50.0, 1_000_000, caps=_B_H_CAPS | {CAP_START_STOP}),
     "LRF100H": _h("LRF100H", 100.0, 1_000_000),
@@ -516,9 +576,7 @@ MODELS: dict = {
 #: Models in the published catalogue whose communication protocol ERDI has not
 #: released.  Listed so that ``erdi-lrf models`` is honest about the whole
 #: catalogue rather than silently omitting them.
-UNPUBLISHED_PROTOCOL = {
-    "SPD1200S2G": "Upstream has not published a manual for this model (0.1-1200 m, with gyro).",
-}
+UNPUBLISHED_PROTOCOL: dict = {}
 
 
 def get_model(name: str) -> ModelSpec:

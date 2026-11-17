@@ -308,7 +308,7 @@ class ErdiLRF:
                     f"table {dict(sorted(table.items()))}"
                 )
             frame = (pa.set_baud_spd1200d03(codes[0])
-                     if self.spec.model == "SPD1200D03"
+                     if self.spec.model in ("SPD1200D03", "SPD1200S2G")
                      else pa.set_baud(codes[0]))
             self.ser.write(frame)
             return

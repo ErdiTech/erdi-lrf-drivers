@@ -20,7 +20,7 @@ def test_catalogue_is_complete_and_honest_about_the_gaps():
 def test_families_are_split_as_published():
     a = {m for m, s in MODELS.items() if s.family == "A"}
     b = {m for m, s in MODELS.items() if s.family == "B"}
-    assert len(a) == 14 and len(b) == 9
+    assert len(a) == 15 and len(b) == 9
 
 
 @pytest.mark.parametrize("model,unit", [

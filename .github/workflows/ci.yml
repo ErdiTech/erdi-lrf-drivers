@@ -17,6 +17,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Host unit test (model table, LRF10VB, SPD1200S2G)
+        run: sh arduino/ErdiLRF/extras/host-test/run.sh
       - uses: arduino/compile-sketches@v1
         with:
           fqbn: arduino:avr:uno

@@ -10,15 +10,15 @@ def test_models_lists_the_whole_catalogue(capsys):
     out = capsys.readouterr().out
     assert "LRF3000A1" in out
     assert "LRF10VB" in out
-    assert "SPD1200S2G" in out and "no published protocol" in out
+    assert "SPD1200S2G" in out
 
 
 def test_models_json(capsys):
     import json
     assert main(["models", "--json"]) == 0
     data = json.loads(capsys.readouterr().out)
-    assert len(data["published"]) == 23
-    assert len(data["unpublished"]) == 1
+    assert len(data["published"]) == 24
+    assert data["unpublished"] == {}
 
 
 @pytest.mark.parametrize("argv", [
@@ -37,8 +37,12 @@ def test_info_reports_the_spd1200d03_baud_conflict(capsys):
     assert "BAUD CONFLICT" in out
 
 
-def test_info_on_an_unpublished_model_fails_loudly(capsys):
-    assert main(["info", "--model", "SPD1200S2G"]) == 1
+def test_info_on_an_unpublished_model_fails_loudly(capsys, monkeypatch):
+    # No model is unpublished right now (SPD1200S2G was added from the factory-pack manual);
+    # the mechanism must still fail loudly for any future entry.
+    import erdi_lrf.models as models
+    monkeypatch.setitem(models.UNPUBLISHED_PROTOCOL, "SPD9999X", "Upstream has not published a manual for this model.")
+    assert main(["info", "--model", "SPD9999X"]) == 1
     assert "not published" in capsys.readouterr().err
 
 

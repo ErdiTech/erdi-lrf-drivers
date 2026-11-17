@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+## 0.1.8 - 2026-11-18
+- Arduino: the model table now has `LRF10VB` (family B, 460800 baud, 4-byte `5C` frame, millimetres, out of range 65535, 0.05-9 m, start/stop only; `setBaudB()` is refused for it because its manual prints no baud frame). It had been missing since Python 0.1.3.
+- `SPD1200S2G` is now driven (Python and Arduino) from its factory-pack manual: 8-byte `55 AA` single (`0x88`), continuous (`0x89`), stop (`0x8E`), distance = reply x 10 metres, default 115200, and the baud request `55 AA 01 FF FF FF Type SUM` with the manual's own 8-entry Type table (05 = 56000, 07 = 128000). Not driven, because the manual itself says to confirm them first: the 12-byte angle / point-to-point packets. The lower-eight-bit checksum is assumed from the other family-A manuals (the S2G manual lists "checksum overflow convention" as unconfirmed), and the factory pack contains a second manual headed SPD1200ZG, so confirm the delivered part's designation.
+- Tests: `python/tests/test_arduino_table.py` cross-checks every row of the Arduino table against the Python catalogue (and the enum order), and `arduino/ErdiLRF/extras/host-test/` compiles the Arduino driver with plain g++ and checks the new rows and frames; both run in CI.
+
 ## 0.1.7 - 2026-11-15
 - `5A` command replies: a well-formed frame that answers a different command no longer aborts the call. The bytes of a `5C` data frame can form such a frame by coincidence (`5C 5A A5 00` followed by `5A`); the reader now keeps listening for its own reply and raises `FrameError` for the other frame only if nothing else arrives before the timeout.
 - `LRF50VB` / `LRF22VB` serial number: if only a reply to some other command arrives for the first printed request form, the other form is now tried as well (it used to be tried only when the module stayed completely silent).
