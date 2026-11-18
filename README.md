@@ -224,6 +224,12 @@ hardware.
 | Short-range DToF, cm | [LRF50H](https://erdilrf.com/models/lrf50h/) · [LRF100H](https://erdilrf.com/models/lrf100h/) · [LRF200H](https://erdilrf.com/models/lrf200h/) · [LRF300H](https://erdilrf.com/models/lrf300h/) · [LRF600H](https://erdilrf.com/models/lrf600h/) · [LRF1500H](https://erdilrf.com/models/lrf1500h/) |
 | Short-range DToF, mm | [LRF22VB](https://erdilrf.com/models/lrf22vb/) · [LRF50VB](https://erdilrf.com/models/lrf50vb/) |
 
+For each of those models, the **specification page with the manufacturer's verbatim test condition** sits on
+a separate site, which is the one this driver's constants were checked against:
+<https://specs.erdilrf.com/models/>.
+Every range number there carries the target, visibility and reflectance it was measured under, so a value can be
+compared against your own scene instead of trusted.
+
 Questions, samples, datasheets and custom protocol work:
 <https://erdilrf.com/contact/>
 
