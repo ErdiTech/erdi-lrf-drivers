@@ -83,13 +83,68 @@ Notes:
   measurement and the autopilot shows the sensor as out of range. Point it at
   a wall **at least 5 m away** for the test.
 
-### VB and H series
+### VB and H series: wiring is different for every model
 
-| Module wire | Signal | TELEM port pin |
+> **WARNING: check your model's supply voltage before you power up.** The
+> TELEM port's 5 V pin is only correct for some of these modules. The LRF22VB
+> runs from 3.0-3.6 V and is damaged by 5 V. The H series needs 9-36 V from an
+> external supply and does not start from 5 V. Do not use one wiring table for
+> all of them.
+
+Supply voltage, from the module manuals:
+
+| Model | Supply | Can it use the TELEM port's 5 V pin? |
 |---|---|---|
-| red | power + (5 V) | 1 +5 V |
-| black | power ground | 6 GND |
-| yellow | signal ground | 6 GND |
+| LRF22VB | 3.0-3.6 V DC | **No.** 5 V is over-voltage. Feed it from a regulated 3.3 V source. |
+| LRF50VB | 3.3-5 V DC | Yes |
+| LRF10VB | 4.5-5.5 V DC | Yes |
+| LRF50H, LRF100H, LRF200H, LRF300H, LRF600H | 9-36 V DC | **No.** Use an external 9-36 V supply. |
+
+Common to all of them: join the grounds (module, external supply if you use
+one, and the TELEM port GND), cross TX and RX, and measure the supply at the
+module connector before you plug the module in. The manuals do not give the
+UART logic level of the VB modules; the LRF600H factory answer is 3.3 V on
+TX/RX independent of the supply. The TELEM port is 3.3 V logic. If you are
+unsure of your unit, ask us before powering up.
+
+**LRF22VB** (6-pin 0.8 mm connector, wire colours from the manual):
+
+| Module wire | Signal | Connect to |
+|---|---|---|
+| red | 3.3 V power + | regulated 3.3 V source (not TELEM 5 V) |
+| black | GND | source GND and TELEM 6 GND |
+| yellow | TX (module out) | TELEM 3 RX |
+| green | RX (module in) | TELEM 2 TX |
+| white, blue | not connected | insulate the ends |
+
+**LRF50VB** (4-pin 1.0 mm connector):
+
+| Module wire | Signal | Connect to |
+|---|---|---|
+| red | 3.3-5 V power + | 1 +5 V (or a 3.3 V source) |
+| black | GND | 6 GND |
+| yellow | TX (module out) | 3 RX |
+| green | RX (module in) | 2 TX |
+
+**LRF10VB** (4-pin 1.25 mm connector). The manual lists pin numbers and gives
+no wire colours, so go by pin number and ask us if you are unsure:
+
+| Module pin | Signal | Connect to |
+|---|---|---|
+| 4 | 5 V power + (4.5-5.5 V) | 1 +5 V |
+| 3 | GND | 6 GND |
+| 1 | TX (module out) | 3 RX |
+| 2 | RX (module in) | 2 TX |
+
+**LRF50H, LRF100H, LRF200H, LRF300H, LRF600H** (5-wire harness, 9-36 V external
+supply). The two ground wires are separate: black is the power ground, yellow is
+the signal (port) ground.
+
+| Module wire | Signal | Connect to |
+|---|---|---|
+| red | 9-36 V power + | external supply + (**not** TELEM 5 V) |
+| black | power GND | external supply - |
+| yellow | signal GND | 6 GND |
 | green | TX (module out) | 3 RX |
 | blue | RX (module in) | 2 TX |
 

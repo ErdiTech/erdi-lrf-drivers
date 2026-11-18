@@ -2,7 +2,8 @@
   BasicMeasure - single-shot ranging with an ERDI 905 nm module.
 
   Wiring (module -> board):
-    VCC  -> 3.3 V or 5 V, per your model's datasheet (family A is 3.3-5 V)
+    VCC  -> per your model's datasheet; the supply differs by model
+           (LRF22VB 3.0-3.6 V only, LRF50VB 3.3-5 V, H series 9-36 V)
     GND  -> GND
     TX   -> board RX
     RX   -> board TX

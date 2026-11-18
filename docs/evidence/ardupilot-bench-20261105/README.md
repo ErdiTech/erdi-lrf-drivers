@@ -35,7 +35,7 @@ the factory laptop's clock.
 | File | Module | Tool entry | Frames | Span | Value |
 |---|---|---|---|---|---|
 | `lrf22vb-tool-capture-mm.txt` | LRF22VB | `VB22A(mm)` | 3000 | 32 s | 1708–1710, median 1709 (mm), every frame within ±2 of the median |
-| `lrf50h-tool-capture-cm.txt` | LRF50H | `WT50A` | 2000 | 22 s | 189–204 cm for 1997 frames, median 196 (cm); 3 frames read 31496, 36977 and 39688 |
+| `lrf50h-tool-capture-cm.txt` | LRF50H | `WT50A` | 2000 | 22 s | 189–206 cm for 1997 frames, median 196 (cm); 3 frames read 31496, 36977 and 39688 |
 
 What they show:
 

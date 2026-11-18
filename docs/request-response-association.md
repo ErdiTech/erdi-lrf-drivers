@@ -28,7 +28,7 @@ t_first     first byte of the reply
 t_last      last byte of the reply
 ```
 
-The deadline is `t_send + (frame_time × 2) + processing_margin`. Frame time is bytes × 10 / baud. At 115200 baud, an 8-byte frame takes about 0.7 ms; at 9600 baud, about 8.3 ms. A 20 Hz module on a 9600-baud link can saturate the wire with replies alone — check the arithmetic before blaming the sensor.
+The deadline is `t_send + (frame_time × 2) + processing_margin`. Frame time is bytes × 10 / baud. At 115200 baud, an 8-byte frame takes about 0.7 ms; at 9600 baud, about 8.3 ms. At 9600 baud the link carries about 960 bytes per second, so 20 replies per second of 8 bytes each (8 × 20 × 10 bit = 1600 bit/s) use about 17% of it. Replies alone do not saturate the wire at that rate; do the arithmetic for your own rate and frame length before blaming the sensor.
 
 ## What to expose to the control loop
 
