@@ -213,6 +213,10 @@ cannot quietly "fix" them.
 Transport is tested against a scripted fake serial port, so `pytest` needs no
 hardware.
 
+## Questions and help
+
+Wiring, protocol and integration questions: ask on the [ERDI engineering Q&A forum](https://community.erditech.com/?utm_source=github&utm_medium=readme&utm_campaign=erdi-lrf-drivers). Answers come from ERDI engineers and stay searchable for the next person. Bugs in this code still go to GitHub Issues.
+
 ## Get the hardware
 
 | | |
