@@ -411,3 +411,28 @@ If these drivers save you time, a tip is appreciated (send the matching coin on 
 ## License
 
 MIT — see [LICENSE](LICENSE). Copyright (c) 2026 ERDI TECH LTD.
+
+## Choosing a module by constraint (not by datasheet headline)
+
+Two numbers decide whether a module fits a platform, and both are arithmetic on published
+specifications rather than measurements:
+
+- **Beam footprint at maximum range** = divergence × range. A target smaller than the footprint is
+  not fully illuminated, so the published maximum assumes something at least that large.
+- **Mass per kilometre** = module mass ÷ published range — what reach costs you on a gimbal.
+- **Power per metre** = average power ÷ published range, with the verbatim statement each watt was
+  measured at (update rate and supply voltage move the figure by a factor of two).
+
+`tools/erdi_select.py` prints all three from the open dataset:
+
+```bash
+python tools/erdi_select.py --url https://specs.erdilrf.com/data/erdi-lrf-specs.json \
+    --band 1535 --max-mass 200
+
+# and check a specific target at a specific distance
+python tools/erdi_select.py --url ... --need-range 2000 --target 0.5
+```
+
+The same tables are published as pages: [footprint and mass](https://specs.erdilrf.com/data/footprint) ·
+[power with conditions](https://specs.erdilrf.com/data/power) ·
+[range conditions, verbatim](https://specs.erdilrf.com/data/range-conditions).
