@@ -436,3 +436,5 @@ python tools/erdi_select.py --url ... --need-range 2000 --target 0.5
 The same tables are published as pages: [footprint and mass](https://specs.erdilrf.com/data/footprint) ·
 [power with conditions](https://specs.erdilrf.com/data/power) ·
 [range conditions, verbatim](https://specs.erdilrf.com/data/range-conditions).
+
+Full check with a worked example (0.5 m target at 2 km, two modules priced against it): [docs/verifying-a-range-claim.md](docs/verifying-a-range-claim.md)
